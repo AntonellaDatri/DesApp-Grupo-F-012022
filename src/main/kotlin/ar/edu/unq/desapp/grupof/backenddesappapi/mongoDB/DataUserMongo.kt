@@ -3,8 +3,8 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
 import ar.edu.unq.desapp.grupof.backenddesappapi.User
 import ar.edu.unq.desapp.grupof.backenddesappapi.UserDAO
 
-class DataUserMongo : GenericMongoDAO<User>(User::class.java), UserDAO {
-    override fun getAllUsers(): List<User> {
+class DataUserMongo() /*: GenericMongoDAO<User>(User::class.java), UserDAO */{
+    /*override fun getAllUsers(): List<User> {
         TODO("Not yet implemented")
     }
 
@@ -22,6 +22,6 @@ class DataUserMongo : GenericMongoDAO<User>(User::class.java), UserDAO {
 
     override fun clear() {
         deleteAll()
-    }
+    }*/
 
 }

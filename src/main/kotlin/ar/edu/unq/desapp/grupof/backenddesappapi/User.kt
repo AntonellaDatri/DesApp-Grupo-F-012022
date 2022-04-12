@@ -1,10 +1,10 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi
 
-import javax.persistence.*
+/*import javax.persistence.**/
 
-@Entity
+/*@Entity*/
 class User(){
-    constructor(name:String, lastName: String,
+   /* constructor(name:String, lastName: String,
                 email:String, password:String,
                 cvu:Int, walletAddress:Int,
                 address:String) : this() {
@@ -17,7 +17,7 @@ class User(){
         this.address = address
     }
 
-    @Id
+   *//* @Id*//*
     var id: Long? = null
 
     @Column(unique = true)
@@ -28,5 +28,5 @@ class User(){
     lateinit var password: String
     var cvu: Int = 0
     lateinit var address: String
-
+*/
 }
