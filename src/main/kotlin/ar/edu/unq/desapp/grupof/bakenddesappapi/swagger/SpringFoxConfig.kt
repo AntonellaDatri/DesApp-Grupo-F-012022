@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.swagger
+package ar.edu.unq.desapp.grupof.bakenddesappapi.swagger
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

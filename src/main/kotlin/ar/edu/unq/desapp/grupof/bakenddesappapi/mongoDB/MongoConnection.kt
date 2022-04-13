@@ -1,15 +1,12 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
+package ar.edu.unq.desapp.grupof.bakenddesappapi.mongoDB
 
-/*
 import com.mongodb.*
 import com.mongodb.client.MongoClient
 import com.mongodb.client.*
-*/
-
 
 class MongoConnection {
-  /*  var client: MongoClient
-    var dataBase: MongoDatabase
+    private var client: MongoClient
+    private var dataBase: MongoDatabase
 
 
     fun <T> getCollection(name:String, entityType: Class<T> ): MongoCollection<T> {
@@ -30,5 +27,5 @@ class MongoConnection {
             .build()
         client = MongoClients.create(settings)
         dataBase = client.getDatabase(database)
-    }*/
+    }
 }

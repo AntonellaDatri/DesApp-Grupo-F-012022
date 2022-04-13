@@ -1,13 +1,12 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
+package ar.edu.unq.desapp.grupof.bakenddesappapi.mongoDB
 
-/*
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.model.Filters
 import org.bson.conversions.Bson
-*/
+
 
 open class GenericMongoDAO<T>(entityType: Class<T>) {
-/*    protected var connection: MongoConnection = MongoConnection()
+    protected var connection: MongoConnection = MongoConnection()
     protected var collection: MongoCollection<T>
     init {
         collection = connection.getCollection(entityType.simpleName, entityType)
@@ -47,5 +46,5 @@ open class GenericMongoDAO<T>(entityType: Class<T>) {
 
     fun <T> aggregate(pipeline:List<Bson>, resultClass:Class<T>): List<T> {
         return collection.aggregate(pipeline, resultClass).into(ArrayList())
-    }*/
+    }
 }
