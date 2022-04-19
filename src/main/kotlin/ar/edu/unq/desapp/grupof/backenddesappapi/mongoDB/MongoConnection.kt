@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.bakenddesappapi.mongoDB
+package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
 
 import com.mongodb.*
 import com.mongodb.client.MongoClient

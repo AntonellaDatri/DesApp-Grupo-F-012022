@@ -1,13 +1,13 @@
-package ar.edu.unq.desapp.grupof.bakenddesappapi.mongoDB
+package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
 
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.model.Filters
 import org.bson.conversions.Bson
 
 
-open class GenericMongoDAO<T>(entityType: Class<T>) {
-    protected var connection: MongoConnection = MongoConnection()
-    protected var collection: MongoCollection<T>
+open class GenericMongoDAO<T : Any>(entityType: Class<T>) {
+    private var connection: MongoConnection = MongoConnection()
+    private var collection: MongoCollection<T>
     init {
         collection = connection.getCollection(entityType.simpleName, entityType)
     }

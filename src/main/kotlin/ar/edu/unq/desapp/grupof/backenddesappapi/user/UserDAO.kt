@@ -1,6 +1,4 @@
-package ar.edu.unq.desapp.grupof.bakenddesappapi.user
-
-import ar.edu.unq.desapp.grupof.bakenddesappapi.user.User
+package ar.edu.unq.desapp.grupof.backenddesappapi.user
 
 interface UserDAO {
     fun getAllUsers(): List<User>

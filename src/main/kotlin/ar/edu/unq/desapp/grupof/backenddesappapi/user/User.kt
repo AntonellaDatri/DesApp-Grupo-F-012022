@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.bakenddesappapi.user
+package ar.edu.unq.desapp.grupof.backenddesappapi.user
 
 import javax.persistence.*
 

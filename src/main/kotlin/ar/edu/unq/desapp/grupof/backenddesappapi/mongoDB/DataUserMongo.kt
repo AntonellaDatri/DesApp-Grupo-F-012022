@@ -1,9 +1,9 @@
-package ar.edu.unq.desapp.grupof.bakenddesappapi.mongoDB
+package ar.edu.unq.desapp.grupof.backenddesappapi.mongoDB
 
-import ar.edu.unq.desapp.grupof.bakenddesappapi.user.User
-import ar.edu.unq.desapp.grupof.bakenddesappapi.user.UserDAO
+import ar.edu.unq.desapp.grupof.backenddesappapi.user.User
+import ar.edu.unq.desapp.grupof.backenddesappapi.user.UserDAO
 
-class DataUserMongo() : GenericMongoDAO<User>(User::class.java), UserDAO {
+class DataUserMongo : GenericMongoDAO<User>(User::class.java), UserDAO {
     override fun getAllUsers(): List<User> {
         TODO("Not yet implemented")
     }
