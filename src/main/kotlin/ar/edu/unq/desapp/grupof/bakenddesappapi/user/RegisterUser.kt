@@ -34,6 +34,7 @@ class RegisterUser {
     fun registerUser(name:String, lastname: String, email: String,address: String, password: String, cvu: String, walletAddress: Int) {
         if (validateName(name) && validateLastName(lastname) && validateEmail(email) && validateAddress(address) && validateAddressWallet(walletAddress)
             && validateCVU(cvu)) {
+val user1 = 'Hoola'
             val user = User(name, lastname, email, password, cvu, walletAddress, address)
             mongoDB.saveUser(user)
         }
