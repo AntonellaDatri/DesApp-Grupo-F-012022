@@ -14,4 +14,4 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "desapp-grupo-f-012022" #Must be unique in Heroku
-          heroku_email: "datri.antonella99@gmail.com"
+          heroku_email: "datri.antonella99@gmail.com" 
