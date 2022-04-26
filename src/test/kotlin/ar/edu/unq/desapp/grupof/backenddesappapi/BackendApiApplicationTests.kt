@@ -15,7 +15,16 @@ class BackendApiApplicationTests {
 	@Test
 	fun createUser() {
 		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password","1234567891234567891234",12345678,"Victoria 897")
-		userService!!.save(userToSave)
+		userService!!.register(userToSave)
+		val userSaved = userService.findByID(12345678)
+		val userName = userSaved.name
+		assert(userName == "Aldana")
+	}
+
+	@Test
+	fun registerUser() {
+		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password","1234567891234567891234",12345678,"Victoria 897")
+		userService!!.register(userToSave)
 		val userSaved = userService.findByID(12345678)
 		val userName = userSaved.name
 		assert(userName == "Aldana")

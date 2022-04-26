@@ -36,4 +36,6 @@ class User{
         this.walletAddress = walletAddress
         this.address = address
     }
+
+
 }

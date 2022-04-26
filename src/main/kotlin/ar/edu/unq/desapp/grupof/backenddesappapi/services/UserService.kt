@@ -35,7 +35,7 @@ class UserService {
         return (walletAddress.toString().length == 8)
     }
     @Transactional
-    fun save(user: User) {
+    fun register(user: User) {
         if (validateName(user.name!!) && validateLastName(user.lastName!!) && validateEmail(user.email!!) && validateAddress(user.address!!) && validateAddressWallet(user.walletAddress!!)
             && validateCVU(user.cvu!!)) {
             repository!!.save(user)

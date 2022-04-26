@@ -18,20 +18,20 @@ class CryptoTransaction{
     var ARGOperation:Float? = null
     @Column
     var user:String? = null
-    @Column
-    var operation:Operation? = null
+//    @Column
+//    var operation:Operation? = null
 
     constructor() : super()
     constructor(
         cryptoactive:String, amount: Float,
         quote:Float,ARGOperation:Float, user: String,
-        operation:Operation,
+//        operation:Operation,
     ) : super() {
         this.cryptoactive = cryptoactive
         this.amount = amount
         this.quote = quote
         this.ARGOperation = ARGOperation
         this.user = user
-        this.operation = operation
+//        this.operation = operation
     }
 }

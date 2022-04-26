@@ -32,8 +32,8 @@ class InitServiceInMemory {
 
     private fun fireInitialData() {
       val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password","1234567891234567891234",12345678, "Victoria 897")
-       userService!!.save(user)
+       userService!!.register(user)
        val user1 = User("Antonella", "D'Atri", "datri.antonella@gmail.com", "password","1234567891234567891235",12345679,"Victoria 897" )
-       userService.save(user1)
+       userService.register(user1)
     }
 }
