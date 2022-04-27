@@ -41,7 +41,7 @@ class UserService {
             repository!!.save(user)
         }
         else {
-            throw Exception("Something is wrong")
+            throw Exception("One field doesn't applied the requirement")
         }
     }
 
