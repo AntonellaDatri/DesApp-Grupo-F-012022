@@ -7,7 +7,6 @@ import javax.persistence.*
 class User{
     @Id
     var walletAddress : Int? = null
-
     @Column
     var name:String? = null
     @Column

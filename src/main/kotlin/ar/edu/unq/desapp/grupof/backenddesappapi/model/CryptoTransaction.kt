@@ -1,21 +1,23 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
-import java.util.Date
+import org.bson.types.ObjectId
 import javax.persistence.*
 
 @Entity
 @Table(name= "transaction")
-class CryptoTransaction{
+open class CryptoTransaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
+
     @Column
     var cryptoactive : String? = null
     @Column
-    var amount:Float? = null
+    var amount:Double? = null
     @Column
-    var quote: Float? = null
+    var quote: Double? = null
     @Column
-    var ARGOperation:Float? = null
+    var ARGOperation:Double? = null
     @Column
     var user:String? = null
 //    @Column
@@ -23,14 +25,14 @@ class CryptoTransaction{
 
     constructor() : super()
     constructor(
-        cryptoactive:String, amount: Float,
-        quote:Float,ARGOperation:Float, user: String,
+        cryptoactive:String, amount: Double,
+        quote:Double, user: String,
 //        operation:Operation,
     ) : super() {
         this.cryptoactive = cryptoactive
         this.amount = amount
         this.quote = quote
-        this.ARGOperation = ARGOperation
+        this.ARGOperation = amount * quote
         this.user = user
 //        this.operation = operation
     }
