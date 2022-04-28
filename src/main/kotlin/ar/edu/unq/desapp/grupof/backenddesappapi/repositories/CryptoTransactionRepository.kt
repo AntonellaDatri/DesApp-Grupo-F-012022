@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository
 interface CryptoTransactionRepository: CrudRepository<CryptoTransaction?, Int?> {
     fun findById(id: Int?): CryptoTransaction?
     override fun findAll(): List<CryptoTransaction?>
+    override fun deleteById(id: Int)
 }

@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupof.backenddesappapi
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
-import ar.edu.unq.desapp.grupof.backenddesappapi.webservices.CryptoAssetQuoteRestService
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired

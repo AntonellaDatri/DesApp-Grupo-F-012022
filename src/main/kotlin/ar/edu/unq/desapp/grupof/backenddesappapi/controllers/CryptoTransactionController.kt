@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.webservices
+package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoTransaction
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoTransactionService
@@ -7,10 +7,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @EnableAutoConfiguration
-class CryptoTransactionRestService {
+class CryptoTransactionController {
     @Autowired
     private val cryptoQuoteService : CryptoTransactionService? = null
 
@@ -28,14 +27,12 @@ class CryptoTransactionRestService {
 
 
     @PostMapping("/api/transaction/create")
-//    @ResponseBody
     fun createCryptoQuote(@RequestBody cryptoTransaction : CryptoTransaction): ResponseEntity<*> {
         val list = cryptoQuoteService!!.create(cryptoTransaction)
         return ResponseEntity.ok().body(list)
     }
 
-//    @RequestMapping(value = ["/custom"], method = [RequestMethod.POST])
-//    fun custom(): String? {
-//        return "custom"
-//    }
+    fun deleteByID(id: Int) {
+        cryptoQuoteService!!.deleteById(id)
+    }
 }

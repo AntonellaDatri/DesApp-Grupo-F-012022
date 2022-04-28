@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository
 interface UserRepository: CrudRepository<User?, Int?> {
     fun findById(id: Int?): User?
     override fun findAll(): List<User?>
+    override fun deleteById(id: Int)
 }

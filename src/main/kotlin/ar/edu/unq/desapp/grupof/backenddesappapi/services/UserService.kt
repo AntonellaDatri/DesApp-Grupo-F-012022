@@ -48,7 +48,9 @@ class UserService {
     fun findByID(id: Int): User {
         return repository!!.findById(id).get()
     }
-
+    fun deleteByID(id: Int) {
+        repository!!.deleteById(id)
+    }
     @Transactional
     fun findAll(): List<User?> {
         return repository!!.findAll()

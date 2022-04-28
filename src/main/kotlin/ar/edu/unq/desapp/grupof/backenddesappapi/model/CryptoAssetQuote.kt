@@ -1,5 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
-import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
-data class CryptoAssetQuote (@SerializedName("symbol") var symbol:String, @SerializedName("price") var price: String)
+data class CryptoAssetQuote (val price: String,val symbol: String, val dateTime: LocalDateTime)

@@ -1,10 +1,9 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
-import org.bson.types.ObjectId
 import javax.persistence.*
 
 @Entity
-@Table(name= "transaction")
+@Table(name= "transactions")
 open class CryptoTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +24,11 @@ open class CryptoTransaction {
 
     constructor() : super()
     constructor(
-        cryptoactive:String, amount: Double,
+        cryptoActive:String, amount: Double,
         quote:Double, user: String,
 //        operation:Operation,
     ) : super() {
-        this.cryptoactive = cryptoactive
+        this.cryptoactive = cryptoActive
         this.amount = amount
         this.quote = quote
         this.ARGOperation = amount * quote

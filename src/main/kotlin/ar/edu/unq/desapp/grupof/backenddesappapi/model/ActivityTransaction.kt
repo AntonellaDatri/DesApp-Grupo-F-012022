@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
-import java.util.Date
 import javax.persistence.*
 
 @Entity

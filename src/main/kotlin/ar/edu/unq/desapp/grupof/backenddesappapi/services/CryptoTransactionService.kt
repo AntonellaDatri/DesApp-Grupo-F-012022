@@ -24,4 +24,8 @@ class CryptoTransactionService {
     fun findAll(): List<CryptoTransaction?> {
         return repository!!.findAll()
     }
+
+    fun deleteById(id: Int) {
+        repository!!.deleteById(id)
+    }
 }

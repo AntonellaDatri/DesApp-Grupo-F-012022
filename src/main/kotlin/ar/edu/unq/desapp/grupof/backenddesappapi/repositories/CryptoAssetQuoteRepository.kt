@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.repositories
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuoteWrapper
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Repository
 import retrofit2.Call
@@ -11,5 +11,5 @@ import retrofit2.http.Url
 @Repository
 interface CryptoAssetQuoteRepository{
     @GET
-    fun findByCryptoName(@Url url:String): Call<CryptoAssetQuote>
+    fun findByCryptoName(@Url url:String): Call<CryptoAssetQuoteWrapper>
 }
