@@ -14,9 +14,16 @@ class ActivityTransaction : CryptoTransaction {
 
     constructor() : super()
     constructor(
+        cryptoActive:String, amount: Double,
+        quote:Double, user: String,
         hour:String, amountOperation: Int,
         reputation:Int
     ) : super() {
+        this.cryptoactive = cryptoActive
+        this.amount = amount
+        this.quote = quote
+        this.ARGOperation = amount * quote
+        this.user = user
         this.hour = hour
         this.amountOperation = amountOperation
         this.reputation = reputation
