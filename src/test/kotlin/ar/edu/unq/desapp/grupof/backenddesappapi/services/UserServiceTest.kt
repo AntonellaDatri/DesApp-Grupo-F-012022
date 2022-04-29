@@ -36,4 +36,10 @@ class UserServiceTest {
 		assert(user2!!.name.equals("Antonella"))
 		assert(user2.walletAddress == 12345679)
 	}
+
+//	@Test
+//	fun invalidPasswordUser() {
+//		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345678,"Victoria 897")
+//		assertThrows<ArrayIndexOutOfBoundsException>(userService!!.register(user))
+//	}
 }
