@@ -19,11 +19,11 @@ class ActivityTransactionControllerTests {
 		val activityTransactionSave = ActivityTransaction("BNBUSDT", 3.0, bnbusdt!!.price.toDouble(), "Aldana Castro", "12:30", 12000,5)
 		activityTransactionController!!.createCryptoQuote(activityTransactionSave)
 		val response = activityTransactionController.getAll()
-		val cryptoTransactions = response.body as ArrayList<*>
-		val cryptoTransaction1 = cryptoTransactions[0] as CryptoTransaction
-		assert(cryptoTransaction1.user == "Aldana Castro")
-		assert(cryptoTransaction1.cryptoactive == "BNBUSDT")
-		assert(cryptoTransaction1.id == activityTransactionSave.id)
+		val activityTransactions = response.body as ArrayList<*>
+		val activityTransaction1 = activityTransactions[0] as CryptoTransaction
+		assert(activityTransaction1.user == "Aldana Castro")
+		assert(activityTransaction1.cryptoactive == "BNBUSDT")
+		assert(activityTransaction1.id == activityTransactionSave.id)
 	}
 
 	@Test
