@@ -5,7 +5,6 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.regex.Pattern
 
 @Service
 class UserService {
@@ -18,11 +17,11 @@ class UserService {
     }
 
     private fun validatePassword(password:String): Boolean {
-        var upperCase = Regex(".*[A-Z].*")
-        var lowerCase = Regex(".*[a-z].*")
-        var textPattern = Regex(".*[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?].*")
-        var long = Regex(".{6,}")
-        return password.matches(upperCase) && password.matches(lowerCase) && password.matches(textPattern) && password.matches(long);
+        val upperCase = Regex(".*[A-Z].*")
+        val lowerCase = Regex(".*[a-z].*")
+        val specialCharacter = Regex(".*[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?].*")
+        val long = Regex(".{6,}")
+        return password.matches(upperCase) && password.matches(lowerCase) && password.matches(specialCharacter) && password.matches(long)
     }
 
     /*The minimum characters of lastname is 3, the maximum is 30*/
@@ -47,7 +46,6 @@ class UserService {
 
     @Transactional
     fun register(user: User) {
-        print("hola" + validatePassword(user.password!!) + user.password)
         if (validateName(user.name!!) && validatePassword(user.password!!) && validateLastName(user.lastName!!) && validateEmail(user.email!!) && validateAddress(user.address!!) && validateAddressWallet(user.walletAddress!!)
             && validateCVU(user.cvu!!)) {
             repository!!.save(user)

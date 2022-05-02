@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -17,7 +18,7 @@ class UserServiceTest {
 	}
 	@Test
 	fun registerUser() {
-		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password","1234567891234567891234",12345677,"Victoria 897")
+		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345677,"Victoria 897")
 		userService!!.register(userToSave)
 		val userSaved = userService.findByID(12345677)
 		val userName = userSaved.name
@@ -37,9 +38,27 @@ class UserServiceTest {
 		assert(user2.walletAddress == 12345679)
 	}
 
-//	@Test
-//	fun invalidPasswordUser() {
-//		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345678,"Victoria 897")
-//		assertThrows<ArrayIndexOutOfBoundsException>(userService!!.register(user))
-//	}
+	@Test
+	fun invalidPasswordUserNoUppercase() {
+		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password@","1234567891234567891234",12345678,"Victoria 897")
+		assertThrows<Exception>({ userService!!.register(user) })
+	}
+
+	@Test
+	fun invalidPasswordUserNoLowercase() {
+		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "PASSWORD@","1234567891234567891234",12345678,"Victoria 897")
+		assertThrows<Exception>({ userService!!.register(user) })
+	}
+
+	@Test
+	fun invalidPasswordUserNoSpecialCharacter() {
+		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password","1234567891234567891234",12345678,"Victoria 897")
+		assertThrows<Exception>({ userService!!.register(user) })
+	}
+
+	@Test
+	fun invalidPasswordUserLessMinimum() {
+		val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Pass@","1234567891234567891234",12345678,"Victoria 897")
+		assertThrows<Exception>({ userService!!.register(user) })
+	}
 }
