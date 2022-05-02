@@ -15,6 +15,15 @@ class UserService {
     private fun validateName(name: String): Boolean {
         return (name.length in 3..30)
     }
+
+    private fun validatePassword(password:String): Boolean {
+        val upperCase = Regex(".*[A-Z].*")
+        val lowerCase = Regex(".*[a-z].*")
+        val specialCharacter = Regex(".*[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?].*")
+        val long = Regex(".{6,}")
+        return password.matches(upperCase) && password.matches(lowerCase) && password.matches(specialCharacter) && password.matches(long)
+    }
+
     /*The minimum characters of lastname is 3, the maximum is 30*/
     private fun validateLastName(lastname: String): Boolean {
         return (lastname.length in 3..30)
@@ -34,9 +43,10 @@ class UserService {
     private fun validateAddressWallet(walletAddress: Int): Boolean {
         return (walletAddress.toString().length == 8)
     }
+
     @Transactional
     fun register(user: User) {
-        if (validateName(user.name!!) && validateLastName(user.lastName!!) && validateEmail(user.email!!) && validateAddress(user.address!!) && validateAddressWallet(user.walletAddress!!)
+        if (validateName(user.name!!) && validatePassword(user.password!!) && validateLastName(user.lastName!!) && validateEmail(user.email!!) && validateAddress(user.address!!) && validateAddressWallet(user.walletAddress!!)
             && validateCVU(user.cvu!!)) {
             repository!!.save(user)
         }

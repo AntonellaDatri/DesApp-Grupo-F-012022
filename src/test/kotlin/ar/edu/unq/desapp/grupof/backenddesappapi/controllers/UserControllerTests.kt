@@ -31,7 +31,7 @@ class UserControllerTests {
 
 	@Test
 	fun registerUser() {
-		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "password","1234567891234567891234",98765432,"Victoria 897")
+		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",98765432,"Victoria 897")
 		userController!!.registerUser(userToSave)
 		val user = userController.getUser(98765432).body
 		val userName = user?.name
