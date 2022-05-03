@@ -1,1 +1,1 @@
-web: java -jar build/libs/kotlin-api.jar --server.port=$PORT
+web: java -jar target/myapp-1.0.0.jar
