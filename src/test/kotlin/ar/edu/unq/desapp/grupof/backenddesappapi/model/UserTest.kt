@@ -16,6 +16,4 @@ class UserTest {
         assert(user.walletAddress!! == 12345678)
         assert(user.address.equals("Victoria 897"))
     }
-
-
 }

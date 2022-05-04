@@ -3,7 +3,11 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.model
 import javax.persistence.*
 
 @Entity
-@Table(name= "users")
+@Table(name= "users",
+    uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("walletAddress")),
+        UniqueConstraint(columnNames = arrayOf("cvu")),
+        UniqueConstraint(columnNames = arrayOf("email"))]
+)
 class User{
     @Id
     var walletAddress : Int? = null
@@ -35,6 +39,4 @@ class User{
         this.walletAddress = walletAddress
         this.address = address
     }
-
-
 }

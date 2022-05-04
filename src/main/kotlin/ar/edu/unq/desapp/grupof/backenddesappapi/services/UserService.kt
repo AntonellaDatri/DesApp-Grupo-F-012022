@@ -48,7 +48,7 @@ class UserService {
     fun register(user: User) {
         if (validateName(user.name!!) && validatePassword(user.password!!) && validateLastName(user.lastName!!) && validateEmail(user.email!!) && validateAddress(user.address!!) && validateAddressWallet(user.walletAddress!!)
             && validateCVU(user.cvu!!)) {
-            repository!!.save(user)
+               repository!!.save(user)
         }
         else {
             throw Exception("One field doesn't applied the requirement")

@@ -12,7 +12,11 @@ class UserControllerTests {
 
 	@Test
 	fun getAllUser() {
-		val response = userController!!.allUsers()
+		val userToSave1 = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891235",12345678,"Victoria 897")
+		val userToSave2 = User("Antonella", "D'Atri", "datri.antonella@gmail.com", "Password@","1234567891234567891236",12345679,"Victoria 897")
+		userController!!.registerUser(userToSave1)
+		userController.registerUser(userToSave2)
+		val response = userController.allUsers()
 		val list= response.body as ArrayList<*>
 		assert(list.size == 2)
 		val user1 = list[0] as User
@@ -21,12 +25,17 @@ class UserControllerTests {
 		val user2 = list[1] as User
 		assert(user2.name.equals("Antonella"))
 		assert(user2.walletAddress == 12345679)
+		userController.deleteByID(12345678)
+		userController.deleteByID(12345679)
 	}
 
 	@Test
 	fun getUser() {
-		val user = userController!!.getUser(12345678).body
+		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345678,"Victoria 897")
+		userController!!.registerUser(userToSave)
+		val user = userController.getUser(12345678).body
 		assert(user?.name == "Aldana")
+		userController.deleteByID(12345678)
 	}
 
 	@Test
