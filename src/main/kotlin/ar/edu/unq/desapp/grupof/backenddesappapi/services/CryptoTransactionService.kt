@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoTransaction
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperate
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoTransactionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,16 +12,17 @@ class CryptoTransactionService {
     private val repository: CryptoTransactionRepository? = null
 
     @Transactional
-    fun create(cryptoQuote: CryptoTransaction)  {
+    fun create(cryptoQuote: IntentionToOperate) : IntentionToOperate {
         repository!!.save(cryptoQuote)
+        return cryptoQuote
     }
 
-    fun findByID(id: Int): CryptoTransaction {
+    fun findByID(id: Int): IntentionToOperate {
         return repository!!.findById(id).get()
     }
 
     @Transactional
-    fun findAll(): List<CryptoTransaction?> {
+    fun findAll(): List<IntentionToOperate?> {
         return repository!!.findAll()
     }
 

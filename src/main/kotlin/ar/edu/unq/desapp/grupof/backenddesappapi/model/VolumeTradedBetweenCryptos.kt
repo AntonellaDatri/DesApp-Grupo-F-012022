@@ -5,7 +5,6 @@ import javax.persistence.*
 
 
 @Entity
-@Table(name= "operationVolume")
 class VolumeTradedBetweenCryptos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

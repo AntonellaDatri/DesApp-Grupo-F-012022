@@ -52,7 +52,8 @@ class SecurityCFG : WebSecurityConfigurerAdapter() {
             .and()
             .httpBasic()
             .and()
-            .cors()
+            .cors().and()
+            .headers().frameOptions().disable();
 
     }
 

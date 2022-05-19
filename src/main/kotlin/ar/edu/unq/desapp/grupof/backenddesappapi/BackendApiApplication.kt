@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class BackendApiApplication
-//User: user, the password is printing in the console.
+//User: user, password admin123.
 fun main(args: Array<String>) {
 	runApplication<BackendApiApplication>(*args)
 }

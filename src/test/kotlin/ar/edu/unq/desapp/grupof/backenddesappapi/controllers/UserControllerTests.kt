@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -34,7 +35,7 @@ class UserControllerTests {
 		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345678,"Victoria 897")
 		userController!!.registerUser(userToSave)
 		val user = userController.getUser(12345678).body
-		assert(user?.name == "Aldana")
+		assert((user as UserDTO).name == "Aldana")
 		userController.deleteByID(12345678)
 	}
 
@@ -43,7 +44,7 @@ class UserControllerTests {
 		val userToSave = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",98765432,"Victoria 897")
 		userController!!.registerUser(userToSave)
 		val user = userController.getUser(98765432).body
-		val userName = user?.name
+		val userName = (user as UserDTO).name
 		assert(userName == "Aldana")
 		userController.deleteByID(98765432)
 	}

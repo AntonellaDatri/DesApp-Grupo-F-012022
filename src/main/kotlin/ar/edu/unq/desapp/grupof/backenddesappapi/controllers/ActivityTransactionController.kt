@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.ActivityTransaction
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoTransaction
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperate
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.ActivityTransactionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -21,7 +21,7 @@ class ActivityTransactionController {
     }
 
     @GetMapping("/api/activity")
-    fun get(@RequestParam(required = true) id : Int): ResponseEntity<CryptoTransaction> {
+    fun get(@RequestParam(required = true) id : Int): ResponseEntity<IntentionToOperate> {
         val list = activityTransactionService!!.findByID(id)
         return ResponseEntity.ok().body(list)
     }
