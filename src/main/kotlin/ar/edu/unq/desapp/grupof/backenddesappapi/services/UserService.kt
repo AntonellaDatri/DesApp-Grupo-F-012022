@@ -13,21 +13,31 @@ class UserService {
     private val repository: UserRepository? = null
 
     @Transactional
-    fun register(user: User) {
+    fun register(user: User): User {
         try {
             user.validateData(user.name, user.lastName, user.email, user.address, user.password, user.cvu, user.walletAddress)
-            repository!!.save(user)
+            return repository!!.save(user)
         } catch (e:Exception) {
             throw e
         }
     }
 
     fun findByID(id: Int): UserDTO {
-        if (repository!!.existsById(id)) {
-            val user = repository.findById(id).get()
-            return UserDTO(user.name, user.lastName, user.email)
-        } else {
-            throw Exception("No existe ese ID")
+        try {
+            val user = repository!!.findById(id).get()
+            return UserDTO(user.name, user.lastName, user.email, user.walletAddress!!)
+        } catch (e:Exception) {
+            throw Exception("There is no user with this ID")
+        }
+
+    }
+
+    fun findByWalletAddress(walletAddress: Int): UserDTO {
+        try {
+            val user = repository!!.findByWalletAddress(walletAddress)!!
+            return UserDTO(user.name, user.lastName, user.email, user.walletAddress!!)
+        } catch (e:Exception) {
+            throw Exception("There is no user with this wallet Address")
         }
 
     }
@@ -46,10 +56,14 @@ class UserService {
     }
     @Transactional
     fun findAll(): MutableList<UserDTO?> {
-        var listDTO =  mutableListOf<UserDTO?>()
+        val listDTO =  mutableListOf<UserDTO?>()
         repository!!.findAll().forEach {
-            listDTO.add(UserDTO(it.name, it.lastName, it.email))
+            listDTO.add(UserDTO(it.name, it.lastName, it.email, it.walletAddress!!))
         }
         return listDTO
+    }
+
+    fun clear() {
+        repository!!.deleteAll()
     }
 }

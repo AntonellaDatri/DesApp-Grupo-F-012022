@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.model
 import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
+
 @Entity
 @Table(name= "users",
     uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("walletAddress")),
@@ -11,6 +12,9 @@ import javax.persistence.*
 )
 class User{
     @Id
+    @GeneratedValue
+    val id: Int? = null
+    @Column(nullable = false, unique = true)
     var walletAddress : Int? = null
     @NotNull
     @Column
@@ -18,14 +22,12 @@ class User{
     @NotNull
     @Column
     lateinit var lastName: String
-    @NotNull
-    @Column
+    @Column(nullable = false, unique = true)
     lateinit var email: String
     @NotNull
     @Column
     lateinit var password: String
-    @NotNull
-    @Column
+    @Column(nullable = false, unique = true)
     lateinit var cvu: String
     @NotNull
     @Column

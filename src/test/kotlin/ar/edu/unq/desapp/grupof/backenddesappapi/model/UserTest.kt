@@ -1,19 +1,17 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class UserTest {
+    private val userFactory : UserFactory = UserFactory()
     @Test
-    fun basicUser() {
-        val user = User("Aldana", "Castro", "aldanacastro1999@gmail.com", "Password@","1234567891234567891234",12345678,"Victoria 897")
-        assert(user.name.equals("Aldana"))
-        assert(user.lastName.equals("Castro"))
-        assert(user.email.equals("aldanacastro1999@gmail.com"))
-        assert(user.password.equals("Password@"))
+    fun createUserTest() {
+        val user = userFactory.anyUser()
+        user.cvu = "1234567891234567891234"
         assert(user.cvu.equals("1234567891234567891234"))
-        assert(user.walletAddress!! == 12345678)
-        assert(user.address.equals("Victoria 897"))
     }
+
 }

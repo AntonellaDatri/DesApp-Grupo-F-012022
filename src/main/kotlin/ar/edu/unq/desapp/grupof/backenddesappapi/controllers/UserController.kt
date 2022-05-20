@@ -22,21 +22,22 @@ class UserController {
     }
 
     @GetMapping("/api/user")
-    fun getUser(@RequestParam(required = true) userID : Int): ResponseEntity<*> {
+    fun getUser(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
         val user : UserDTO
-        try { user = userService!!.findByID(userID) }
+        try { user = userService!!.findByWalletAddress(walletAddress) }
         catch (e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
         return ResponseEntity.ok().body(user)
     }
 
+
     @PostMapping("/api/user/register")
     fun registerUser(@RequestBody newUser : User ): ResponseEntity<*> {
         val user : UserDTO
         try {
             userService!!.register(newUser)
-            user = UserDTO(newUser.name, newUser.lastName, newUser.email)
+            user = UserDTO(newUser.name, newUser.lastName, newUser.email, newUser.walletAddress!!)
         }
         catch (e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
@@ -46,5 +47,9 @@ class UserController {
 
     fun deleteByID(id: Int) {
         userService!!.deleteByID(id)
+    }
+
+    fun deleteAll() {
+        userService!!.clear()
     }
 }
