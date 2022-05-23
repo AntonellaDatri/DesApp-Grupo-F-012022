@@ -1,15 +1,15 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperate
-import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoTransactionRepository
+import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.IntentionToOperateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CryptoTransactionService {
+class IntentionToOperateService {
     @Autowired
-    private val repository: CryptoTransactionRepository? = null
+    private val repository: IntentionToOperateRepository? = null
 
     @Transactional
     fun create(cryptoQuote: IntentionToOperate) : IntentionToOperate {

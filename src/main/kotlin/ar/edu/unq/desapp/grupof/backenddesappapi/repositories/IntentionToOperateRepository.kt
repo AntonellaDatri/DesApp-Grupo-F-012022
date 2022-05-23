@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Configuration
 @Repository
-interface CryptoTransactionRepository: CrudRepository<IntentionToOperate?, Int?> {
+interface IntentionToOperateRepository: CrudRepository<IntentionToOperate?, Int?> {
     fun findById(id: Int?): IntentionToOperate?
     override fun findAll(): List<IntentionToOperate?>
     override fun deleteById(id: Int)

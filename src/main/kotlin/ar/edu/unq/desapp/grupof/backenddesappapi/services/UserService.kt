@@ -42,15 +42,6 @@ class UserService {
 
     }
 
-    fun findByIDComplete(id: Int): User {
-        if (repository!!.existsById(id)) {
-            val user = repository.findById(id).get()
-            return user
-        } else {
-            throw Exception("No existe ese ID")
-        }
-
-    }
     fun deleteByID(id: Int) {
         repository!!.deleteById(id)
     }

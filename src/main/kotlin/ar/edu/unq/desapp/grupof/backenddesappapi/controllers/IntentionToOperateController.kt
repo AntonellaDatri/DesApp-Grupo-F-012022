@@ -2,9 +2,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperate
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperateDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoTransactionService
+import ar.edu.unq.desapp.grupof.backenddesappapi.services.IntentionToOperateService
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -14,9 +12,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @EnableAutoConfiguration
-class CryptoTransactionController {
+class IntentionToOperateController {
     @Autowired
-    private val cryptoQuoteService : CryptoTransactionService? = null
+    private val cryptoQuoteService : IntentionToOperateService? = null
     @Autowired
     private val userService : UserService = UserService()
 
@@ -33,12 +31,12 @@ class CryptoTransactionController {
     }
 
     @PostMapping("/api/transaction/create")
-    fun createCryptoQuote(@RequestBody cryptoTransactionDTO : IntentionToOperateDTO): ResponseEntity<*> {
+    fun createIntention(@RequestBody cryptoTransactionDTO : IntentionToOperateDTO): ResponseEntity<*> {
         val cryptoTransaction : IntentionToOperate
         val userId : Int
         try {
             userId = cryptoTransactionDTO.walletAddress
-            userService.findByIDComplete(userId)
+            userService.findByID(userId)
             cryptoTransaction = IntentionToOperate(cryptoTransactionDTO.cryptoActive, cryptoTransactionDTO.amount, userId, cryptoTransactionDTO.operation)
         } catch(e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
