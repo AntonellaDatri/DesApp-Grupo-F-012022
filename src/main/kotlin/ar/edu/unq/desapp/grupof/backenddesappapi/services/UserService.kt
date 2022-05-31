@@ -34,7 +34,7 @@ class UserService {
 
     fun findByWalletAddress(walletAddress: Int): UserDTO {
         try {
-            val user = repository!!.findByWalletAddress(walletAddress)!!
+            val user = repository!!.findByWalletAddress(walletAddress).get()
             return UserDTO(user.name, user.lastName, user.email, user.walletAddress!!)
         } catch (e:Exception) {
             throw Exception("There is no user with this wallet Address")

@@ -35,4 +35,5 @@ class ProcessedUserInformationController {
     fun deleteByID(id: Int) {
         processedUserInformationService!!.deleteById(id)
     }
+
 }

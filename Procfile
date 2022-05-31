@@ -1,1 +1,1 @@
-web: java -jar target/myapp-1.0.0.jar
+heroku war:deploy target/bakend-desapp-api-0.0.1-SNAPSHOT.war --app desapp-grupo-f-012022

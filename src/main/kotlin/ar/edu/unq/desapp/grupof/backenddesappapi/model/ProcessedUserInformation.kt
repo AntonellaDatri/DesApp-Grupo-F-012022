@@ -10,13 +10,13 @@ class ProcessedUserInformation : IntentionToOperate {
     constructor() : super()
     constructor(
         cryptoActive:String, amount: Double,
-        quote:Double, walletAddress: Int, mailingAddress: Int,
+        quote:Double, user: User, mailingAddress: Int,
     ) : super() {
         this.cryptoactive = cryptoActive
         this.amount = amount
         this.quote = quote
         this.argAmount = amount * quote
-        this.userID = walletAddress
+        this.user = user
         this.mailingAddress = mailingAddress
     }
     fun makeTransfer(){

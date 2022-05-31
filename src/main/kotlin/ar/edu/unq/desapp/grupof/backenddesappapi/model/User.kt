@@ -32,6 +32,13 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
+    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], orphanRemoval = true)
+    val IntentionToOperates: List<IntentionToOperate>? = null
+    @Column
+    var points: Int = 0
+    @Column
+    var operations: Int = 0
+
 
     constructor() : super()
     constructor(
@@ -97,5 +104,7 @@ class User{
     private fun validateAddressWallet(walletAddress: Int?): Boolean {
         return walletAddress != null && (walletAddress.toString().length == 8)
     }
+
+
 
 }

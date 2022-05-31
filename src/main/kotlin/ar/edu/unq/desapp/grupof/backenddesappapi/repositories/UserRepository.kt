@@ -10,7 +10,7 @@ import java.util.*
 @Repository
 interface UserRepository: CrudRepository<User?, Int?> {
     override fun findById(id: Int): Optional<User?>
-    fun findByWalletAddress(walletAddress: Int): User?
+    fun findByWalletAddress(walletAddress: Int): Optional<User?>
     override fun findAll(): List<User>
     override fun deleteById(id: Int)
     override fun deleteAll()

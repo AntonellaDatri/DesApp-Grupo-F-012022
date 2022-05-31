@@ -9,8 +9,9 @@ class IntentionToOperateFactory() {
                      amount: Double  = 100.0,
                      walletAddress: Int = 11111111,
                      operation: Operations = Operations.SELL): IntentionToOperate {
+        var user = UserFactory().anyUser()
 
-        return IntentionToOperate(cryptoActive,amount, walletAddress, operation)
+        return IntentionToOperate(cryptoActive,amount, user, operation)
     }
 
     fun anyIntentionDTO(cryptoActive: String = "BNBUSDT",
