@@ -32,8 +32,14 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
+    @OneToMany(mappedBy = "orders",  cascade = [CascadeType.ALL], orphanRemoval = true)
+    val orders: List<Order>? = null
+    @OneToMany(mappedBy = "transfer",  cascade = [CascadeType.ALL], orphanRemoval = true)
+    val transfer: List<Transfer>? = null
     @Column
-    var points : Int = 0
+    var points: Int = 0
+    @Column
+    var operations: Int = 0
 
     constructor() : super()
     constructor(
@@ -100,4 +106,10 @@ class User{
         return walletAddress != null && (walletAddress.toString().length == 8)
     }
 
+    fun transferMoney(cvu: String){
+        return
+    }
+    fun transferCrypto(walletAddress: Int){
+        return
+    }
 }

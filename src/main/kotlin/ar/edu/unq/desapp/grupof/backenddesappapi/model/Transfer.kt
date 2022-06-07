@@ -1,25 +1,28 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidUserTransfer
 import java.time.LocalDateTime
-import java.util.*
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
+
 @Entity
+@Table(name= "Transfer")
 class Transfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
-    @Column
+    @ManyToOne()
     lateinit var  order : Order
-    @Column
+    @ManyToOne()
     lateinit var executingUser : User
     @Column
     var amountToTransfer:Double? = null
     @Column
     var dateTime: LocalDateTime = LocalDateTime.now()
     @Column
-    var status = Status.Active
+    var status:State = State.ACTIVE
 
     constructor() : super()
     constructor(
@@ -36,38 +39,44 @@ class Transfer {
         } else if(order.operation == Operations.SELL && order.user.id == user.id) {
             order.user.transferMoney(executingUser.cvu)
         }  else {
-            throw Exception }
-        order.status = Status.PENDING
-        status = Status.PENDING
+            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
+        }
+        order.state = State.PENDING
+        status = State.PENDING
     }
 
     fun confirmReception(user: User){
         if (order.operation == Operations.BUY && order.user.id == user.id) {
-            order.user.transferCrypto(executingUser.walletAddress)
+            order.user.transferCrypto(executingUser.walletAddress!!)
         } else if(order.operation == Operations.SELL && executingUser.id == user.id) {
             order.user.transferMoney(executingUser.cvu)
-        } else { throw  Exception}
-        val amountTotal = order.argAmount - amountToTransfer!!
+        } else {
+            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
+        }
+        val amountTotal = order.argAmount!! - amountToTransfer!!
         order.setAmount(amountTotal)
-        status = Status.DONE
+        status = State.DONE
         calculateReputation()
     }
 
    private fun calculateReputation() {
-            if (LocalDateTime.now() - dateTime <= 30) {
+            if ((LocalDateTime.now().minus(this.dateTime)) <= 30) {
                 order.user.points += 10
                 executingUser.points += 10
             } else {
                 order.user.points += 5
                 executingUser.points += 5
             }
-        order.user.amountOperation += 1
+        order.user.operations += 1
     }
 
     fun cancel(user: User){
-        if (order.user.id = user.id or executingUser.id = user.id) {
+        if (order.user.id == user.id || executingUser.id!! == user.id) {
              user.points -= 20
-            status = Status.CANCEL
+            status = State.CANCEL
         }
+    }
+
+    private fun performedWithin30Min(){
     }
 }
