@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class IntentionToOperateServiceTest {
     @Autowired
-    private val intentionToOperateService: IntentionToOperateService? = null
+    private val intentionToOperateService: OrderService? = null
     @Test
     fun createAnIntentionToOperate(){
         val intention = IntentionToOperateFactory().anyIntention()

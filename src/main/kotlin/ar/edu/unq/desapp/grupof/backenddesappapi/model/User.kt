@@ -32,6 +32,8 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
+    @Column
+    var points : Int = 0
 
     constructor() : super()
     constructor(

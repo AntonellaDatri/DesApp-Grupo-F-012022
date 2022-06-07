@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.ProcessedUserInformation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.ProcessedUserInformationRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,16 +12,16 @@ class ProcessedUserInformationService {
     private val repository: ProcessedUserInformationRepository? = null
 
     @Transactional
-    fun create(processedUserInformation: ProcessedUserInformation)  {
+    fun create(processedUserInformation: Transfer)  {
         repository!!.save(processedUserInformation)
     }
 
-    fun findByID(id: Int): ProcessedUserInformation {
+    fun findByID(id: Int): Transfer {
         return repository!!.findById(id).get()
     }
 
     @Transactional
-    fun findAll(): List<ProcessedUserInformation?> {
+    fun findAll(): List<Transfer?> {
         return repository!!.findAll()
     }
 

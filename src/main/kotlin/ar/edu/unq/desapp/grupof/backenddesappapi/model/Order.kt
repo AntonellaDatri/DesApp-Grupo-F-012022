@@ -10,7 +10,7 @@ private val cryptoAssetQuoteService: CryptoAssetQuoteService= CryptoAssetQuoteSe
 
 @Entity
 @Table(name= "intent_transactions")
-open class IntentionToOperate {
+open class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
