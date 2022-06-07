@@ -26,7 +26,7 @@ class IntentionToOperateService {
         return repository!!.findAll()
     }
 
-    fun deleteById(id: Int) {
-        repository!!.deleteById(id)
+    fun clear() {
+        repository!!.deleteAll()
     }
 }

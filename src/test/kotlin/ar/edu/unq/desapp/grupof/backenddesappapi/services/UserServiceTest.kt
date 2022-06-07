@@ -18,8 +18,7 @@ class UserServiceTest {
 	@Test
 	fun registerUser() {
 		val userToSave = userFactory.anyUser()
-		userService!!.register(userToSave)
-		assertDoesNotThrow { userService.register(userToSave) }
+		assertDoesNotThrow { userService!!.register(userToSave) }
 	}
 
 	@Test

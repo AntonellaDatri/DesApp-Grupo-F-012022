@@ -10,13 +10,15 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+
 @RestController
 @EnableAutoConfiguration
-class IntentionToOperateController {
-    @Autowired
-    private val cryptoQuoteService : IntentionToOperateService? = null
-    @Autowired
-    private val userService : UserService = UserService()
+class IntentionToOperateController(
+    @Autowired var userService : UserService? = null,
+    @Autowired private val cryptoQuoteService : IntentionToOperateService? = null
+) {
+
+//    var userService : UserService? = null
 
     @GetMapping("/api/transactions")
     fun getAll(): ResponseEntity<*> {
@@ -36,7 +38,7 @@ class IntentionToOperateController {
         val userId : Int
         try {
             userId = cryptoTransactionDTO.walletAddress
-            userService.findByID(userId)
+            userService!!.findByWalletAddress(userId)
             cryptoTransaction = IntentionToOperate(cryptoTransactionDTO.cryptoActive, cryptoTransactionDTO.amount, userId, cryptoTransactionDTO.operation)
         } catch(e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
@@ -45,7 +47,7 @@ class IntentionToOperateController {
         return ResponseEntity.ok().body(list)
     }
 
-    fun deleteByID(id: Int) {
-        cryptoQuoteService!!.deleteById(id)
+    fun deleteAll() {
+        cryptoQuoteService!!.clear()
     }
 }
