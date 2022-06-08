@@ -2,6 +2,8 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.OrderDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.OrderRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.OrderService
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,8 +24,7 @@ class OrderController {
     fun getAll(): ResponseEntity<*> {
         val orders = cryptoQuoteService!!.findAll()
         val ordersDTO = orders.map {
-            val user =  userService.findByID(it.userID)
-            OrderDTO(it.hour, it!!.cryptoactive, it.argAmount, it.quote, user)
+            OrderDTO.fromModel(it!!)
         }
         return ResponseEntity.ok().body(ordersDTO)
     }
@@ -35,18 +36,14 @@ class OrderController {
     }
 
     @PostMapping("/api/transaction/create")
-    fun createIntention(@RequestBody cryptoTransactionDTO : OrderDTO): ResponseEntity<*> {
-        val cryptoTransaction : Order
-        val userId : Int
+    fun createIntention(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
+        val order : Order
         try {
-            userId = cryptoTransactionDTO.walletAddress
-            userService.findByID(userId)
-            cryptoTransaction = Order(cryptoTransactionDTO.cryptoActive, cryptoTransactionDTO.amount, userId, cryptoTransactionDTO.operation)
+            order = cryptoQuoteService!!.create(orderRequestDTO)
         } catch(e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        val list = cryptoQuoteService!!.create(cryptoTransaction)
-        return ResponseEntity.ok().body(list)
+        return ResponseEntity.ok().body(OrderDTO.fromModel(order))
     }
 
     fun deleteByID(id: Int) {

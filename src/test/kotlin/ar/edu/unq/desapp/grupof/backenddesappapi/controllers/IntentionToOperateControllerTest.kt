@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class IntentionToOperateControllerTest {
     @Autowired
-    private val intentionToOperateController: IntentionToOperateController? = null
+    private val intentionToOperateController: OrderController? = null
     /*@Test
     fun createAndFindAnIntentention() {
         val intention = IntentionToOperateFactory().anyIntentionDTO(walletAddress= 12345678)

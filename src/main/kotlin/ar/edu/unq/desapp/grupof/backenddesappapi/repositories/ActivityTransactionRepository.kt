@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.repositories
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.ActivityTransaction
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.repository.CrudRepository

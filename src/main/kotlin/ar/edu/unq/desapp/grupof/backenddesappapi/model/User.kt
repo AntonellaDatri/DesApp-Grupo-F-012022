@@ -12,7 +12,7 @@ import javax.persistence.*
 )
 class User{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     val id: Int? = null
     @Column(nullable = false, unique = true)
     var walletAddress : Int? = null
@@ -32,14 +32,14 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
-    @OneToMany(mappedBy = "orders",  cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orders: List<Order>? = null
-    @OneToMany(mappedBy = "transfer",  cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "executingUser",  cascade = [CascadeType.ALL], orphanRemoval = true)
     val transfer: List<Transfer>? = null
     @Column
     var points: Int = 0
     @Column
-    var operations: Int = 0
+    var amountOperations: Int = 0
 
     constructor() : super()
     constructor(

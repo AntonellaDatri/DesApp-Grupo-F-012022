@@ -2,25 +2,26 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidUserTransfer
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.Date
 import javax.persistence.*
 
 
 @Entity
-@Table(name= "Transfer")
+@Table(name= "transfer")
 class Transfer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     var id : Int? = null
     @ManyToOne()
     lateinit var  order : Order
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     lateinit var executingUser : User
     @Column
     var amountToTransfer:Double? = null
     @Column
-    var dateTime: LocalDateTime = LocalDateTime.now()
+    var dateTime: Date = Date()
     @Column
     var status:State = State.ACTIVE
 
@@ -41,7 +42,7 @@ class Transfer {
         }  else {
             throw InvalidUserTransfer("The User doesn't belong to the transfer.")
         }
-        order.state = State.PENDING
+        order.status = State.PENDING
         status = State.PENDING
     }
 
@@ -59,15 +60,15 @@ class Transfer {
         calculateReputation()
     }
 
-   private fun calculateReputation() {
-            if ((LocalDateTime.now().minus(this.dateTime)) <= 30) {
-                order.user.points += 10
-                executingUser.points += 10
-            } else {
-                order.user.points += 5
-                executingUser.points += 5
-            }
-        order.user.operations += 1
+    private fun calculateReputation() {
+        if (performedWithin30Min()) {
+            order.user.points += 10
+            executingUser.points += 10
+        } else {
+            order.user.points += 5
+            executingUser.points += 5
+        }
+        order.user.amountOperations += 1
     }
 
     fun cancel(user: User){
@@ -77,6 +78,10 @@ class Transfer {
         }
     }
 
-    private fun performedWithin30Min(){
+    private fun performedWithin30Min(): Boolean {
+        val actualDate = Date()
+        val diff: Long = actualDate.time - dateTime.time
+        val min = 1800000
+        return diff <= min
     }
 }

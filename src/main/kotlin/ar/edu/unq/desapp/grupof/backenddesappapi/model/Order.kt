@@ -1,10 +1,10 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidTransferAmount
-import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidUserTransfer
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
 
 @Autowired
@@ -14,33 +14,31 @@ private val cryptoAssetQuoteService: CryptoAssetQuoteService= CryptoAssetQuoteSe
 @Table(name= "intent_transactions")
 open class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id : Int? = null
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    open var id : Int? = null
 
     @Column
-    var cryptoactive : String? = null
+    open var cryptoactive : String? = null
     @Column
-    var amount:Double? = null
+    open var amount:Double? = null
     @Column
-    var quote: Double? = null
+    open var quote: Double? = null
     @Column
-    var argAmount:Double? = null
-    @Column
-    var userID: Int? = null
+    open var argAmount:Double? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var operation:Operations? = null
+    open var operation:Operations? = null
     @ManyToOne()
-    lateinit var user: User
-    @OneToMany(mappedBy = "transfer",  cascade = [CascadeType.ALL], orphanRemoval = true)
-    val transfer: List<Transfer>? = null
+    open lateinit var user: User
+    @OneToMany(mappedBy = "order",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+    open val transfer: List<Transfer>? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var state:State? = State.ACTIVE
+    open var status:State? = State.ACTIVE
 
     constructor() : super()
     constructor(
-        cryptoActive:String, amount: Double, walletAddress: Int,
+        cryptoActive:String, amount: Double, user: User,
         operation:Operations
     ) : super() {
         this.cryptoactive = cryptoActive
@@ -48,7 +46,7 @@ open class Order {
         val cryptoQuote = cryptoAssetQuoteService.findByCryptoName(cryptoActive, LocalDateTime.now())
         this.quote = cryptoQuote.price.toDouble()
         this.argAmount = amount *  quote!!
-        this.userID= walletAddress
+        this.user= user
         this.operation = operation
     }
 
@@ -56,7 +54,7 @@ open class Order {
         if(amount > 0.0){
 
         }else if (amount == 0.0){
-            this.state = State.DONE
+            this.status = State.DONE
         }else{
             throw InvalidTransferAmount("The amount of the transfer is greater than the amount of the intention.")
         }
