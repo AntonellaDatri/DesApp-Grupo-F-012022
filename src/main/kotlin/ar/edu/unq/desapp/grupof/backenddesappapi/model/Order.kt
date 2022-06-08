@@ -11,10 +11,10 @@ import javax.persistence.*
 private val cryptoAssetQuoteService: CryptoAssetQuoteService= CryptoAssetQuoteService()
 
 @Entity
-@Table(name= "intent_transactions")
+@Table(name= "ORDER")
 open class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id : Int? = null
 
     @Column

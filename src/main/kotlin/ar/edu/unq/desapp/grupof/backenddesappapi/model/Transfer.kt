@@ -1,8 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidUserTransfer
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 import java.util.Date
 import javax.persistence.*
 
@@ -12,7 +10,7 @@ import javax.persistence.*
 class Transfer {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
     @ManyToOne()
     lateinit var  order : Order
