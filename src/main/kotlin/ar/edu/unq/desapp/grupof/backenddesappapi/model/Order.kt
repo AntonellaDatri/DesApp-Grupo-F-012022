@@ -4,14 +4,13 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidTransferAmoun
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Autowired
 private val cryptoAssetQuoteService: CryptoAssetQuoteService= CryptoAssetQuoteService()
 
 @Entity
-@Table(name= "ORDER")
+@Table(name= "Intention_operate")
 open class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +28,7 @@ open class Order {
     @Enumerated(EnumType.STRING)
     open var operation:Operations? = null
     @ManyToOne()
+    @JoinColumn(name = "orders")
     open lateinit var user: User
     @OneToMany(mappedBy = "order",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     open val transfer: List<Transfer>? = null
@@ -51,12 +51,12 @@ open class Order {
     }
 
     fun setAmount(amount:Double){
-        if(amount > 0.0){
+        if (amount < 0.0){
+            throw InvalidTransferAmount("The amount of the transfer is greater than the amount of the intention.")
 
         }else if (amount == 0.0){
             this.status = State.DONE
-        }else{
-            throw InvalidTransferAmount("The amount of the transfer is greater than the amount of the intention.")
         }
+        this.amount = amount
     }
 }

@@ -14,7 +14,8 @@ class Transfer {
     var id : Int? = null
     @ManyToOne()
     lateinit var  order : Order
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
+    @JoinColumn(name = "transfer")
     lateinit var executingUser : User
     @Column
     var amountToTransfer:Double? = null

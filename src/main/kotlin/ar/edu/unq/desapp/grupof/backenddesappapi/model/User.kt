@@ -32,9 +32,9 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
-    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val orders: MutableSet<Order>? = mutableSetOf()
-    @OneToMany(mappedBy = "executingUser",  cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "executingUser",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     val transfer: MutableSet<Transfer>? = mutableSetOf()
     @Column
     var points: Int = 0
