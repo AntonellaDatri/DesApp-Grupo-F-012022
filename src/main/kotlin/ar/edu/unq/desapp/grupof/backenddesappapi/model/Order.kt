@@ -30,7 +30,7 @@ open class Order {
     @ManyToOne()
     @JoinColumn(name = "orders")
     open lateinit var user: User
-    @OneToMany(mappedBy = "order",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     open val transfer: List<Transfer>? = null
     @Column
     @Enumerated(EnumType.STRING)
@@ -53,7 +53,6 @@ open class Order {
     fun setAmount(amount:Double){
         if (amount < 0.0){
             throw InvalidTransferAmount("The amount of the transfer is greater than the amount of the intention.")
-
         }else if (amount == 0.0){
             this.status = State.DONE
         }

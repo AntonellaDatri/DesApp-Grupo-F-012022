@@ -1,9 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.TransferActivesDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.TransferDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.VolumeOperationsDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.*
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.TransferService
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,12 +24,10 @@ class TransferController {
     }
 
     @GetMapping("/api/activityBetween")
-    fun getActivityBetween(@RequestBody date1: Date, date2: Date, userId: Int): ResponseEntity<*> {
+    fun getActivityBetween(@RequestParam(required = true) date1: String, date2: String, userId: Int): ResponseEntity<*> {
         val list = activityTransactionService!!.findBetween(userId, date1, date2)
-        val listActives = mutableListOf<TransferActivesDTO>()
-        list.forEach { listActives.add(TransferActivesDTO.fromModel(it!!)) }
         val user = userRepository!!.findById(userId).get()
-        val response = VolumeOperationsDTO(user,listActives)
+        val response = VolumeOperationsDTO(user,list)
         return ResponseEntity.ok().body(response)
     }
 
@@ -62,8 +57,8 @@ class TransferController {
     }
 
     @PostMapping("/api/activity/create")
-    fun createTransfer(@RequestBody transferRequest: Transfer): ResponseEntity<*> {
-        val transfer = activityTransactionService!!.createTransfer(transferRequest)
+    fun createTransfer(@RequestBody transferRequestDTO: TransferRequestDTO): ResponseEntity<*> {
+        val transfer = activityTransactionService!!.createTransfer(transferRequestDTO)
         return ResponseEntity.ok().body(TransferDTO.fromModel(transfer))
     }
     @DeleteMapping("/api/activity/delete")

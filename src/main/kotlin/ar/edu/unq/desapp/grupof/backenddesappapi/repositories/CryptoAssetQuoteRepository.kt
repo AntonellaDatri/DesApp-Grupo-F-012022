@@ -12,5 +12,6 @@ import retrofit2.http.Url
 interface CryptoAssetQuoteRepository{
     @GET
     fun findByCryptoName(@Url url:String): Call<CryptoAssetQuoteWrapper>
+    @GET(".")
     fun find(): Call<CryptoAssetQuoteWrapper>
 }

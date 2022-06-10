@@ -11,7 +11,7 @@ data class OrderDTO(
     val argAmount:Double,
     val user: String,
     val amountOperations:Int,
-    val reputation:Int){
+    val reputation:String){
 
     companion object {
         fun fromModel(order: Order): OrderDTO {
@@ -23,7 +23,7 @@ data class OrderDTO(
                 order.argAmount!!,
                 order.user.name + " " +order.user.lastName,
                 order.user.amountOperations,
-                order.user.points / order.user.amountOperations
+                if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones"
             )
         }
     }

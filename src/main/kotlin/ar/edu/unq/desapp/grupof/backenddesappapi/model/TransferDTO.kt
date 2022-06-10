@@ -6,8 +6,9 @@ data class TransferDTO(
     val amountToTransfer:Double,
     val user: String,
     val amountOperations:Int,
-    val reputation:Int,
-    val addressShipping : String){
+    val reputation:String,
+    val addressShipping : String
+    ){
 
     companion object {
         fun fromModel(transfer: Transfer): TransferDTO {
@@ -20,7 +21,7 @@ data class TransferDTO(
                 transfer.amountToTransfer!!,
                 user.name + " " +user.lastName,
                 user.amountOperations,
-                user.points / user.amountOperations,
+                if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones",
                 getShippingAddress(order)
             )
         }

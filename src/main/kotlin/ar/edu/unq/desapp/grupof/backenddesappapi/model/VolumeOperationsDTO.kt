@@ -28,13 +28,14 @@ class VolumeOperationsDTO {
         val token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYxNzkyODMsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJhbGRpaWkuMTIzMzVAZ21haWwuY29tIn0.-IMthM4jMcVGaKylL-TX2fhi4vOLhR63x1ZD4wDPlErv1c_-gZCdK23monp_pS4GWBww9mDR_p3uNK3H64cAGQ"
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
+                .header("Authorization", "Bearer $token")
                 .build()
             chain.proceed(newRequest)
         }.build()
-        val url = "https://api.estadisticasbcra.com/usd_of"
+        val url = "https://api.estadisticasbcra.com/usd_of/"
         return Retrofit.Builder()
             .baseUrl(url)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -44,6 +45,7 @@ class VolumeOperationsDTO {
         val response =
             retrofit.create(CryptoAssetQuoteRepository::class.java).find().execute()
         val code = response.code()
+        print("error" + code)
 
         if (code == 400) throw IllegalArgumentException("No existe")
         if (code != 200) throw IllegalArgumentException("Server error")
