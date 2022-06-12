@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.*
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.TransferService
+import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,7 @@ class TransferController {
     @Autowired
     private val activityTransactionService : TransferService? = null
     @Autowired
-    private val userRepository : UserRepository? = null
+    private val userService : UserService? = null
 
     @GetMapping("/api/activities")
     fun getAll(): ResponseEntity<*> {
@@ -26,7 +27,7 @@ class TransferController {
     @GetMapping("/api/activityBetween")
     fun getActivityBetween(@RequestParam(required = true) date1: String, date2: String, userId: Int): ResponseEntity<*> {
         val list = activityTransactionService!!.findBetween(userId, date1, date2)
-        val user = userRepository!!.findById(userId).get()
+        val user = userService!!.findByID(userId)
         val response = VolumeOperationsDTO(user,list)
         return ResponseEntity.ok().body(response)
     }

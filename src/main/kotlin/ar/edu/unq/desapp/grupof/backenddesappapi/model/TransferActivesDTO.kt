@@ -8,7 +8,6 @@ data class TransferActivesDTO(
     companion object {
         fun fromModel(transfer: Transfer): TransferActivesDTO {
             val order = transfer.order
-            val user = order.user
             return TransferActivesDTO(
                 order.cryptoactive!!,
                 order.amount!!,

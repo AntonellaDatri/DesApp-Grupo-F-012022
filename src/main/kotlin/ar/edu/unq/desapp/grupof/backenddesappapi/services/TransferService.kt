@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 
@@ -35,18 +34,21 @@ class TransferService {
 
     @Transactional
     fun findAll(): List<TransferDTO?> {
-        val tranfers = repository!!.findAll()
-        return tranfers.map {
+        val transfers = repository!!.findAll()
+        return transfers.map {
             TransferDTO.fromModel(it!!)
         }
     }
 
     @Transactional
-    fun findBetween(userId : Int, date1: String, date2: String): List<TransferActivesDTO> {
+    fun findBetween(userId : Int, dateString1: String, dateString2: String): List<TransferActivesDTO> {
         //TODO transaction
-        val date1 = formateDate(date1)
-        val date2 = formateDate(date2)
-        val filter1 = repository!!.findAll().filter { ((it!!.executingUser.id == userId) || (it.order.user.id == userId)) && (it.dateTime >= date1) && (it.dateTime <= date2) }
+        val date1 = formateDate(dateString1)
+        val date2 = formateDate(dateString2)
+        val filter1 = repository!!.findAll().filter {
+            val dateTime = formateDate(it!!.dateTime.toString())
+            ((it.executingUser.id == userId) || (it.order.user.id == userId))
+            && (dateTime >= date1) && (dateTime <= date2) }
         return filter1.map{ TransferActivesDTO.fromModel(it!!)}
 
     }
@@ -76,7 +78,7 @@ class TransferService {
         transfer.cancel(user)
     }
 
-    private fun formateDate(date: String): Date? {
+    private fun formateDate(date: String): Date {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         return formatter.parse(date)
 
