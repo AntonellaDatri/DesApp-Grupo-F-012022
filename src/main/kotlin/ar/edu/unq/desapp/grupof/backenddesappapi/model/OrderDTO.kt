@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
-import java.sql.Date
 import java.time.LocalDate
 
 data class OrderDTO(
@@ -14,13 +13,13 @@ data class OrderDTO(
     val reputation:String){
 
     companion object {
-        fun fromModel(order: Order): OrderDTO {
+        fun fromModel(order: Order, cryptoPrice: Double): OrderDTO {
             return OrderDTO(
                 LocalDate.now(),
                 order.cryptoactive!!,
                 order.amount!!,
-                order.quote!!,
-                order.argAmount!!,
+                cryptoPrice,
+                cryptoPrice * order.amount!!,
                 order.user.name + " " +order.user.lastName,
                 order.user.amountOperations,
                 if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones"

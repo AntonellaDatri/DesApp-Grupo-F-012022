@@ -22,6 +22,7 @@ class Transfer {
     @Column
     var dateTime: Date = Date()
     @Column
+    @Enumerated(EnumType.STRING)
     var status:State = State.ACTIVE
 
     constructor() : super()
@@ -34,6 +35,12 @@ class Transfer {
     }
 
     fun makeTransfer(user: User){
+        transferMoney(user)
+        order.status = State.PENDING
+        status = State.PENDING
+    }
+
+    fun transferMoney(user: User){
         if (order.operation == Operations.BUY && executingUser.id == user.id) {
             executingUser.transferMoney(order.user.cvu)
         } else if(order.operation == Operations.SELL && order.user.id == user.id) {
@@ -41,8 +48,6 @@ class Transfer {
         }  else {
             throw InvalidUserTransfer("The User doesn't belong to the transfer.")
         }
-        order.status = State.PENDING
-        status = State.PENDING
     }
 
     fun confirmReception(user: User){
@@ -53,7 +58,7 @@ class Transfer {
         } else {
             throw InvalidUserTransfer("The User doesn't belong to the transfer.")
         }
-        val amountTotal = order.argAmount!! - amountToTransfer!!
+        val amountTotal = order.amount!! - amountToTransfer!!
         order.setAmount(amountTotal)
         status = State.DONE
         calculateReputation()

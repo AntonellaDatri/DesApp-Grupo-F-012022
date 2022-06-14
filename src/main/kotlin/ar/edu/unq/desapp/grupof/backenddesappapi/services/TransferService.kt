@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -17,6 +18,8 @@ class TransferService {
     private val repository: ActivityTransactionRepository? = null
     @Autowired
     private val orderService: OrderService? = null
+    @Autowired
+    private val cryptoAssetQuoteService: CryptoAssetQuoteService? = null
     @Autowired
     private val userRepository: UserRepository? = null
     @Transactional
@@ -35,8 +38,9 @@ class TransferService {
     @Transactional
     fun findAll(): List<TransferDTO?> {
         val transfers = repository!!.findAll()
+        val criptsPrice =  cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
         return transfers.map {
-            TransferDTO.fromModel(it!!)
+            TransferDTO.fromModel(it!!, criptsPrice[it.order.cryptoactive!!]!!.price.toDouble())
         }
     }
 
@@ -46,10 +50,14 @@ class TransferService {
         val date1 = formateDate(dateString1)
         val date2 = formateDate(dateString2)
         val filter1 = repository!!.findAll().filter {
-            val dateTime = formateDate(it!!.dateTime.toString())
+            val dateTime = formateDate(it!!.dateTime    .toString())
             ((it.executingUser.id == userId) || (it.order.user.id == userId))
             && (dateTime >= date1) && (dateTime <= date2) }
-        return filter1.map{ TransferActivesDTO.fromModel(it!!)}
+
+        val criptsPrice =  cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
+        return filter1.map{
+            TransferActivesDTO.fromModel(it!!, criptsPrice[it.order.cryptoactive!!]!!.price.toDouble())
+        }
 
     }
 
@@ -57,11 +65,14 @@ class TransferService {
         repository!!.deleteById(id)
     }
 
-    fun  makeTransfer(transferID: Int, userID: Int) {
+    fun  makeTransfer(transferID: Int, userID: Int): Transfer {
         val transfer = repository!!.findById(transferID).get()
         if (transfer.status != State.ACTIVE || transfer.order.status != State.ACTIVE) { throw InvalidTransacctionTransfer("The transaction can't transfer money") }
         val user = userRepository!!.findById(userID).get()
         transfer.makeTransfer(user)
+        orderService!!.save(transfer.order)
+        repository.save(transfer)
+        return transfer
     }
 
     fun  confirmTransfer(transferID: Int, userID: Int) {
@@ -69,6 +80,8 @@ class TransferService {
         if (transfer.status != State.PENDING || transfer.order.status != State.PENDING) { throw InvalidTransacctionTransfer("The transaction can't be confirm") }
         val user = userRepository!!.findById(userID).get()
         transfer.confirmReception(user)
+        orderService!!.save(transfer.order)
+        repository.save(transfer)
     }
 
     fun  cancelTransfer(transferID: Int, userID: Int) {

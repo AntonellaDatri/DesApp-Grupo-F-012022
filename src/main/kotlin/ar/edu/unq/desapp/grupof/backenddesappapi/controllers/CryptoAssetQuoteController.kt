@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
-import net.bytebuddy.asm.Advice.Return
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
@@ -31,9 +30,9 @@ class CryptoAssetQuoteController {
 
     @GetMapping("/api/10cryptoQuote")
     fun getCryptoAssetsQuote(): ResponseEntity<*> {
-        val list : MutableList<CryptoAssetQuote>
+        val list : MutableCollection<CryptoAssetQuote>
         try {
-            list = cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
+            list = cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now()).values
         }  catch (e:IllegalArgumentException) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message);
         }

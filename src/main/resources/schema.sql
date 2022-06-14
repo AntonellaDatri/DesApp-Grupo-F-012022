@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS  users ( id INT NOT NULL AUTO_INCREMENT,
 CREATE TABLE IF NOT EXISTS  transfer ( id INT NOT NULL AUTO_INCREMENT,
                                       AMOUNT_TO_TRANSFER DOUBLE PRECISION,
                                       DATE_TIME DATETIME,
-                                      STATUS INTEGER);
+                                      STATUS VARCHAR(255));
 
 CREATE TABLE IF NOT EXISTS  Intention_operate ( id INT NOT NULL AUTO_INCREMENT,
                                     AMOUNT DOUBLE PRECISION,

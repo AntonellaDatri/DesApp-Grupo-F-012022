@@ -11,13 +11,13 @@ data class TransferDTO(
     ){
 
     companion object {
-        fun fromModel(transfer: Transfer): TransferDTO {
+        fun fromModel(transfer: Transfer, cryptoPrice: Double ): TransferDTO {
             val order = transfer.order
             val user = order.user
             return TransferDTO(
                 order.cryptoactive!!,
                 order.amount!!,
-                order.quote!!,
+                cryptoPrice,
                 transfer.amountToTransfer!!,
                 user.name + " " +user.lastName,
                 user.amountOperations,

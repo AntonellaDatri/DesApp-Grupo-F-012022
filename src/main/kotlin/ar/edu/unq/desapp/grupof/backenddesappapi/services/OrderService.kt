@@ -23,6 +23,11 @@ class OrderService {
         return order
     }
 
+    fun save(order: Order): Order {
+        repository!!.save(order)
+        return order
+    }
+
 
     fun findByID(id: Int): Order {
         return repository!!.findById(id).get()

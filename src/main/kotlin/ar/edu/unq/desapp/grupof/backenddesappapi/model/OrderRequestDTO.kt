@@ -10,12 +10,12 @@ data class OrderRequestDTO(
     val operation:Operations){
 
     companion object {
-        fun fromModel(order: Order): OrderRequestDTO {
+        fun fromModel(order: Order, cryptoPrice: Double): OrderRequestDTO {
             return OrderRequestDTO(
                 order.cryptoactive!!,
                 order.amount!!,
-                order.quote!!,
-                order.argAmount!!,
+                cryptoPrice,
+                cryptoPrice * order.amount!!,
                 order.user.id!!,
                 order.operation!!
             )
