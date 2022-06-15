@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 
 @Configuration
 @Repository
-interface IntentionToOperateRepository: CrudRepository<Order?, Int?> {
+interface OrderRepository: CrudRepository<Order?, Int?> {
     fun findById(id: Int?): Order?
     fun findByStateEquals(state: State): List<Order?>
     override fun findAll(): List<Order?>

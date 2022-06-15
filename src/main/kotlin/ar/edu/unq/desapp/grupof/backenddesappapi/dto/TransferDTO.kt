@@ -16,13 +16,13 @@ data class TransferDTO(
     ){
 
     companion object {
-        fun fromModel(transfer: Transfer, cryptoPrice: Double ): TransferDTO {
+        fun fromModel(transfer: Transfer): TransferDTO {
             val order = transfer.order
             val user = order.user
             return TransferDTO(
-                order.cryptoactive!!,
-                order.amount!!,
-                cryptoPrice,
+                order.cryptoName!!,
+                order.amountToOperate!!,
+                transfer.cryptoPrice!!,
                 transfer.amountToTransfer!!,
                 user.name + " " +user.lastName,
                 user.amountOperations,
@@ -34,7 +34,7 @@ data class TransferDTO(
             return if (order.operation == Operation.BUY) {
                 order.user.walletAddress.toString()
             } else {
-                return order.user.cvu
+                order.user.cvu
             }
         }
     }

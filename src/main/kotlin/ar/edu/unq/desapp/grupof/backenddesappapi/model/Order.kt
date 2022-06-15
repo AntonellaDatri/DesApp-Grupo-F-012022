@@ -1,12 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidTransferAmount
-import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
-import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.*
-
-@Autowired
-private val cryptoAssetQuoteService: CryptoAssetQuoteService= CryptoAssetQuoteService()
 
 @Entity
 @Table(name= "Intention_operate")
@@ -14,30 +9,29 @@ class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
-
     @Column
-    var cryptoactive : String? = null
+    var cryptoName : String? = null
     @Column
-    var amount:Double? = null
+    var amountToOperate:Double? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var operation:Operations? = null
-    @ManyToOne()
+    var operation:Operation? = null
+    @ManyToOne
     @JoinColumn(name = "orders")
     lateinit var user: User
     @OneToMany(mappedBy = "order",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
-    val transfer: List<Transfer>? = null
+    val transfers: List<Transfer>? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var status:State? = State.ACTIVE
+    var state:State? = State.ACTIVE
 
     constructor() : super()
     constructor(
         cryptoActive:String, amount: Double, user: User,
         operation:Operation
     ) : super() {
-        this.cryptoactive = cryptoActive
-        this.amount = amount
+        this.cryptoName = cryptoActive
+        this.amountToOperate = amount
         this.user= user
         this.operation = operation
     }
@@ -50,6 +44,6 @@ class Order {
         }else{
             this.state = State.ACTIVE
         }
-        this.amount = amount
+        this.amountToOperate = amount
     }
 }

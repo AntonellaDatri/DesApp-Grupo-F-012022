@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssets
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoAssetQuoteRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import retrofit2.GsonConverterFactory
 import retrofit2.Retrofit
 import java.time.LocalDateTime
@@ -11,7 +12,7 @@ import java.time.LocalDateTime
 @Service
 class CryptoAssetQuoteService {
 
-    fun createRetroFit() : Retrofit{
+    private fun createRetroFit() : Retrofit{
         val url = "https://api1.binance.com/api/v3/ticker/"
         return Retrofit.Builder()
             .baseUrl(url)

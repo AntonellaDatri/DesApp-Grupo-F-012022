@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.*
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidTransacctionTransfer
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.*
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.ActivityTransactionRepository
@@ -91,9 +92,8 @@ class TransferService {
     @Transactional
     fun findAll(): List<TransferDTO?> {
         val transfers = repository!!.findAll()
-        val criptsPrice =  cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
         return transfers.map {
-            TransferDTO.fromModel(it!!, criptsPrice[it.order.cryptoactive!!]!!.price.toDouble())
+            TransferDTO.fromModel(it!!)
         }
     }
 
@@ -105,8 +105,17 @@ class TransferService {
     private fun formatDate(date: String): Date {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
         return formatter.parse(date)
-
     }
 
+    fun getVolumeOperation(userId : Int, date1: String, date2: String): VolumeOperationsDTO{
+        val list = findBetween(userId, date1, date2)
+        val user = userService!!.findByID(userId)
+        val usdQuote = usdQuoteService!!.findUsdQuote()
+        return VolumeOperationsDTO(user, list, usdQuote.toDouble())
+    }
 
+    private fun save(transfer: Transfer): Transfer {
+        repository!!.save(transfer)
+        return transfer
+    }
  }

@@ -1,9 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.OrderDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.OrderRequestDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.OrderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -21,12 +19,27 @@ class OrderController {
     fun createOrder(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
         val order : OrderDTO
         try {
-            order = cryptoQuoteService!!.create(orderRequestDTO)
+            order = orderService!!.create(orderRequestDTO)
         } catch(e:Exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        val criptoPrice =  cryptoAssetQuoteService!!.findByCryptoName(order.cryptoactive!!, LocalDateTime.now())
-        return ResponseEntity.ok().body(OrderDTO.fromModel(order, criptoPrice.price.toDouble()))
+        return ResponseEntity.ok().body(order)
+    }
+
+    @GetMapping("/api/order")
+    fun getOrder(@RequestParam(required = true) id : Int): ResponseEntity<*> {
+        val order : OrderDTO
+        try { order = orderService!!.findByID(id) }
+        catch (e:Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
+        return ResponseEntity.ok().body(order)
+    }
+
+    @GetMapping("/api/order/all")
+    fun getAll(): ResponseEntity<*> {
+        val ordersDTO = orderService!!.getAll()
+        return ResponseEntity.ok().body(ordersDTO)
     }
 
     @GetMapping("/api/order/active")
@@ -35,7 +48,8 @@ class OrderController {
         return ResponseEntity.ok().body(ordersDTO)
     }
 
+    @DeleteMapping("/api/order/delete")
     fun deleteByID(id: Int) {
-        cryptoQuoteService!!.deleteById(id)
+        orderService!!.deleteById(id)
     }
 }

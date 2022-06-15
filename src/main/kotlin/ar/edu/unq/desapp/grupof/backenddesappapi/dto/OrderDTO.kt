@@ -1,5 +1,6 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.model
+package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import java.time.LocalDate
 
 data class OrderDTO(
@@ -16,10 +17,10 @@ data class OrderDTO(
         fun fromModel(order: Order, cryptoPrice: Double): OrderDTO {
             return OrderDTO(
                 LocalDate.now(),
-                order.cryptoactive!!,
-                order.amount!!,
+                order.cryptoName!!,
+                order.amountToOperate!!,
                 cryptoPrice,
-                cryptoPrice * order.amount!!,
+                cryptoPrice * order.amountToOperate!!,
                 order.user.name + " " +order.user.lastName,
                 order.user.amountOperations,
                 if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones"

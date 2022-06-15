@@ -28,7 +28,7 @@ class CryptoAssetQuoteController {
         }
     }
 
-    @GetMapping("/api/10cryptoQuote")
+    @GetMapping("/api/cryptoQuote/firstTen")
     fun getCryptoAssetsQuote(): ResponseEntity<*> {
         return try {
             val list : MutableCollection<CryptoAssetQuote> =

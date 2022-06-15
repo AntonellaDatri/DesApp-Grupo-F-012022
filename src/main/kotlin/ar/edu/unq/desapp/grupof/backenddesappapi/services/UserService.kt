@@ -1,7 +1,8 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -13,10 +14,12 @@ class UserService {
     private val repository: UserRepository? = null
 
     @Transactional
-    fun register(user: User): User {
+    fun register(userRequestDTO: UserRequestDTO): UserDTO {
         try {
-            user.validateData(user.name, user.lastName, user.email, user.address, user.password, user.cvu, user.walletAddress)
-            return repository!!.save(user)
+            var user = User.fromModel(userRequestDTO)
+            user.validateData(userRequestDTO.name, userRequestDTO.lastName, userRequestDTO.email, userRequestDTO.address, userRequestDTO.password, userRequestDTO.cvu, userRequestDTO.walletAddress)
+            user =  repository!!.save(user)
+            return UserDTO.fromModel(user)
         } catch (e:Exception) {
             throw e
         }
