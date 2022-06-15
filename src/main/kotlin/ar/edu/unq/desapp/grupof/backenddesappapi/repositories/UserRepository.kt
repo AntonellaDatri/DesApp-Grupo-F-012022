@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.repositories
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository

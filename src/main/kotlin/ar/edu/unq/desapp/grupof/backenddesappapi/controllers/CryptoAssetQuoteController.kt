@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
-import net.bytebuddy.asm.Advice.Return
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
@@ -20,23 +19,23 @@ class CryptoAssetQuoteController {
 
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
-        val list : CryptoAssetQuote
-          try {
-              list = cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
-          }  catch (e:IllegalArgumentException) {
-              return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message);
-          }
-        return ResponseEntity.ok().body(list)
+        return try {
+            val list : CryptoAssetQuote =
+                cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
+            ResponseEntity.ok().body(list)
+        }  catch (e:IllegalArgumentException) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
     }
 
     @GetMapping("/api/10cryptoQuote")
     fun getCryptoAssetsQuote(): ResponseEntity<*> {
-        val list : MutableList<CryptoAssetQuote>
-        try {
-            list = cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
+        return try {
+            val list : MutableCollection<CryptoAssetQuote> =
+                cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now()).values
+            ResponseEntity.ok().body(list)
         }  catch (e:IllegalArgumentException) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message);
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.ok().body(list)
     }
 }

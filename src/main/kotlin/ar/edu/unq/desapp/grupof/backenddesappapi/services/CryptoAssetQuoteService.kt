@@ -19,6 +19,7 @@ class CryptoAssetQuoteService {
             .build()
     }
 
+    @Transactional
     fun findByCryptoName(cryptoName: String, dateTime: LocalDateTime): CryptoAssetQuote {
         val retrofit = createRetroFit()
         val response =
@@ -32,10 +33,11 @@ class CryptoAssetQuoteService {
         return CryptoAssetQuote(price, symbol, dateTime)
     }
 
-    fun getTenCryptoAssets(dateTime: LocalDateTime): MutableList<CryptoAssetQuote> {
-        val listCryptos = mutableListOf<CryptoAssetQuote>()
+    @Transactional
+    fun getTenCryptoAssets(dateTime: LocalDateTime): MutableMap<String, CryptoAssetQuote> {
+        val listCryptos = mutableMapOf<String,CryptoAssetQuote>()
         CryptoAssets.values().forEach {
-            listCryptos.add(findByCryptoName(it.name, dateTime))
+            listCryptos.put(it.name, findByCryptoName(it.name, dateTime))
         }
         return listCryptos
     }

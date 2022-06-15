@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.ProcessedUserInformation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.ProcessedUserInformationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -20,14 +20,14 @@ class ProcessedUserInformationController {
     }
 
     @GetMapping("/api/processed-users-information")
-    fun get(@RequestParam(required = true) id : Int): ResponseEntity<ProcessedUserInformation> {
+    fun get(@RequestParam(required = true) id : Int): ResponseEntity<Transfer> {
         val list = processedUserInformationService!!.findByID(id)
         return ResponseEntity.ok().body(list)
     }
 
 
     @PostMapping("/api/processed-users-information/create")
-    fun createCryptoQuote(@RequestBody processedUserInformation : ProcessedUserInformation): ResponseEntity<*> {
+    fun createCryptoQuote(@RequestBody processedUserInformation : Transfer): ResponseEntity<*> {
         val list = processedUserInformationService!!.create(processedUserInformation)
         return ResponseEntity.ok().body(list)
     }

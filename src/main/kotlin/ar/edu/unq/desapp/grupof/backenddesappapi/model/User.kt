@@ -12,7 +12,7 @@ import javax.persistence.*
 )
 class User{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null
     @Column(nullable = false, unique = true)
     var walletAddress : Int? = null
@@ -32,6 +32,14 @@ class User{
     @NotNull
     @Column
     lateinit var address: String
+    @OneToMany(mappedBy = "user",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val orders: MutableSet<Order>? = mutableSetOf()
+    @OneToMany(mappedBy = "executingUser",  cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val transfer: MutableSet<Transfer>? = mutableSetOf()
+    @Column
+    var points: Int = 0
+    @Column
+    var amountOperations: Int = 0
 
     constructor() : super()
     constructor(
@@ -98,4 +106,10 @@ class User{
         return walletAddress != null && (walletAddress.toString().length == 8)
     }
 
+    fun transferMoney(cvu: String){
+        return
+    }
+    fun transferCrypto(walletAddress: Int){
+        return
+    }
 }

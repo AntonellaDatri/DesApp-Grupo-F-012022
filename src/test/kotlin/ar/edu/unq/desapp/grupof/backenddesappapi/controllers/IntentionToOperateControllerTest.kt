@@ -1,19 +1,13 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.IntentionToOperateFactory
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperate
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.IntentionToOperateDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class IntentionToOperateControllerTest {
     @Autowired
-    private val intentionToOperateController: IntentionToOperateController? = null
+    private val intentionToOperateController: OrderController? = null
     /*@Test
     fun createAndFindAnIntentention() {
         val intention = IntentionToOperateFactory().anyIntentionDTO(walletAddress= 12345678)
