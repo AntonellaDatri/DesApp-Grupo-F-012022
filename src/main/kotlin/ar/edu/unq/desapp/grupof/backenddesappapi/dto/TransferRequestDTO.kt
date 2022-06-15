@@ -1,4 +1,7 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.model
+package ar.edu.unq.desapp.grupof.backenddesappapi.dto
+
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
+
 data class TransferRequestDTO(
     val amountToTransfer:Double,
     val userID: Int,

@@ -12,7 +12,7 @@ class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Int? = null
-    @ManyToOne()
+    @ManyToOne
     lateinit var  order : Order
     @ManyToOne()
     @JoinColumn(name = "transfer")
@@ -25,7 +25,7 @@ class Transfer {
     var dateTime: Date = Date()
     @Column
     @Enumerated(EnumType.STRING)
-    var status:State = State.ACTIVE
+    var state:State = State.ACTIVE
 
     constructor() : super()
     constructor(
@@ -39,15 +39,15 @@ class Transfer {
 
     fun makeTransfer(user: User){
         transferMoney(user)
-        order.status = State.PENDING
-        status = State.PENDING
+        order.state = State.PENDING
+        state = State.PENDING
     }
 
     fun confirmReception(user: User){
         transfer(user)
         val amountTotal = order.amountToOperate!! - amountToTransfer!!
         order.setAmount(amountTotal)
-        status = State.DONE
+        state = State.DONE
         calculateReputation()
     }
 
@@ -65,7 +65,7 @@ class Transfer {
     fun cancel(user: User){
         if (order.user.id == user.id || executingUser.id!! == user.id) {
              user.points -= 20
-            status = State.CANCEL
+            state = State.CANCEL
         }
     }
 
@@ -74,5 +74,25 @@ class Transfer {
         val diff: Long = actualDate.time - dateTime.time
         val min = 1800000
         return diff <= min
+    }
+
+    private fun transferMoney(user: User){
+        if (order.operation == Operation.BUY && executingUser.id == user.id) {
+            executingUser.transferMoney(order.user.cvu)
+        } else if(order.operation == Operation.SELL && order.user.id == user.id) {
+            order.user.transferMoney(executingUser.cvu)
+        }  else {
+            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
+        }
+    }
+
+    private fun transfer(user : User) {
+        if (order.operation == Operation.BUY && order.user.id == user.id) {
+            order.user.transferCrypto(executingUser.walletAddress!!)
+        } else if(order.operation == Operation.SELL && executingUser.id == user.id) {
+            order.user.transferMoney(executingUser.cvu)
+        } else {
+            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
+        }
     }
 }

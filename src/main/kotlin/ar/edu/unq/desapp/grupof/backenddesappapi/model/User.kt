@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
 import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
@@ -111,5 +112,19 @@ class User{
     }
     fun transferCrypto(walletAddress: Int){
         return
+    }
+
+    companion object {
+        fun fromModel(user : UserRequestDTO): User {
+            return User(
+                user.name,
+                user.lastName,
+                user.email,
+                user.password,
+                user.cvu,
+                user.walletAddress,
+                user.address
+            )
+        }
     }
 }

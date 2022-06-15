@@ -1,7 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
 import org.junit.jupiter.api.AfterEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest

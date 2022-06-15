@@ -1,31 +1,39 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.OrderRequestDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.IntentionToOperateRepository
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.State
+import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.OrderRepository
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class OrderService {
     @Autowired
-    private val repository: IntentionToOperateRepository? = null
+    private val repository: OrderRepository? = null
     @Autowired
     private val userRepository: UserRepository? = null
+    @Autowired
+    private val cryptoAssetQuoteService : CryptoAssetQuoteService? = null
 
     @Transactional
-    fun create(orderDTO: OrderRequestDTO) : Order {
+    fun create(orderDTO: OrderRequestDTO) : OrderDTO {
         val user = userRepository!!.findById(orderDTO.user).get()
-        val order = Order(orderDTO.cryptoActive, orderDTO.amount, user, orderDTO.operation)
-        repository!!.save(order)
-        return order
+        val order = save(Order(orderDTO.cryptoActive, orderDTO.amount, user, orderDTO.operation))
+        val cryptoPrice = getCryptoPrice(order)
+        return OrderDTO.fromModel(order, cryptoPrice)
     }
 
-    fun save(order: Order): Order {
-        repository!!.save(order)
-        return order
+    @Transactional
+    fun getAll(): List<OrderDTO> {
+        return findAll().map {
+            val cryptoPrice = getCryptoPrice(it!!)
+            OrderDTO.fromModel(it, cryptoPrice)
+        }
     }
 
     @Transactional
@@ -48,6 +56,7 @@ class OrderService {
         return repository!!.findAll()
     }
 
+    @Transactional
     fun deleteById(id: Int) {
         repository!!.deleteById(id)
     }

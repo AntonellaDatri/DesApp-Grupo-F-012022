@@ -16,10 +16,10 @@ data class OrderRequestDTO(
     companion object {
         fun fromModel(order: Order, cryptoPrice: Double): OrderRequestDTO {
             return OrderRequestDTO(
-                order.cryptoactive!!,
-                order.amount!!,
+                order.cryptoName!!,
+                order.amountToOperate!!,
                 cryptoPrice,
-                cryptoPrice * order.amount!!,
+                cryptoPrice * order.amountToOperate!!,
                 order.user.id!!,
                 order.operation!!
             )

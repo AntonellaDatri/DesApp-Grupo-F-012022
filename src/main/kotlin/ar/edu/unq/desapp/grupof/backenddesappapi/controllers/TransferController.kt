@@ -1,14 +1,12 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.*
-import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.TransferRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.TransferService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @EnableAutoConfiguration
@@ -31,13 +29,21 @@ class TransferController {
 
     @PostMapping("/api/transfer/make")
     fun makeTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
-        activityTransactionService!!.makeTransfer(transferID, userID)
+        try {
+            transferService!!.makeTransfer(transferID, userID)
+        }catch (e:Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
         return ResponseEntity.status( HttpStatus.OK).body("Successful transfer")
     }
 
-    @PostMapping("/api/confirmTransfer")
+    @PostMapping("/api/transfer/confirm")
     fun confirmTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
-        activityTransactionService!!.confirmTransfer(transferID, userID)
+        try {
+            transferService!!.confirmTransfer(transferID, userID)
+        }catch (e:Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
         return ResponseEntity.status( HttpStatus.OK).body("Confirmed transfer")
 
     }
@@ -52,15 +58,30 @@ class TransferController {
         return ResponseEntity.status( HttpStatus.OK).body("Transfer canceled")
     }
 
-    @PostMapping("/api/activity/create")
-    fun createTransfer(@RequestBody transferRequestDTO: TransferRequestDTO): ResponseEntity<*> {
-        val transfer = activityTransactionService!!.createTransfer(transferRequestDTO)
-        val criptsPrice =  cryptoAssetQuoteService!!.findByCryptoName(transfer.order.cryptoactive!! ,LocalDateTime.now())
-
-        return ResponseEntity.ok().body(TransferDTO.fromModel(transfer, criptsPrice.price.toDouble()))
+    @GetMapping("/api/transfer/activityBetween")
+    fun getActivityBetween(@RequestParam(required = true) date1: String, date2: String, userId: Int): ResponseEntity<*> {
+        val volumeOperationsDTO = transferService!!.getVolumeOperation(userId, date1, date2)
+        return ResponseEntity.ok().body(volumeOperationsDTO)
     }
-    @DeleteMapping("/api/activity/delete")
+
+    @GetMapping("/api/transfer")
+    fun get(@RequestParam(required = true) id : Int): ResponseEntity<*> {
+        return try {
+            val transfer = transferService!!.findByID(id)
+            ResponseEntity.ok().body(transfer)
+        }catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
+    }
+
+    @GetMapping("/api/transfer/all")
+    fun getAll(): ResponseEntity<*> {
+        val transfersDTO = transferService!!.findAll()
+        return ResponseEntity.ok().body(transfersDTO)
+    }
+
+    @DeleteMapping("/api/transfer/delete")
     fun deleteByID(id: Int) {
-        activityTransactionService!!.deleteById(id)
+        transferService!!.deleteById(id)
     }
 }

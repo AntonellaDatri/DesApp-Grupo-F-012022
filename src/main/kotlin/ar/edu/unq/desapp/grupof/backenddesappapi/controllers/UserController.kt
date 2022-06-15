@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.UserDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -15,10 +15,16 @@ class UserController {
     @Autowired
     private val userService: UserService? = null
 
-    @GetMapping("/api/users")
-    fun allUsers(): ResponseEntity<*> {
-        val list = userService!!.findAll()
-        return ResponseEntity.ok().body(list)
+    @PostMapping("/api/user/register")
+    fun registerUser(@RequestBody newUser : UserRequestDTO ): ResponseEntity<*> {
+        val user : UserDTO
+        try {
+            user = userService!!.register(newUser)
+        }
+        catch (e:Exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
+        return ResponseEntity.ok().body(user)
     }
 
     @GetMapping("/api/user")
@@ -31,24 +37,18 @@ class UserController {
         return ResponseEntity.ok().body(user)
     }
 
-
-    @PostMapping("/api/user/register")
-    fun registerUser(@RequestBody newUser : User ): ResponseEntity<*> {
-        val user : UserDTO
-        try {
-            userService!!.register(newUser)
-            user = UserDTO(newUser.name, newUser.lastName, newUser.email, newUser.walletAddress!!)
-        }
-        catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
-        }
-        return ResponseEntity.ok().body(user)
+    @GetMapping("/api/user/all")
+    fun getUsers(): ResponseEntity<*> {
+        val list = userService!!.findAll()
+        return ResponseEntity.ok().body(list)
     }
 
+    @DeleteMapping("/api/user/id/delete")
     fun deleteByID(id: Int) {
         userService!!.deleteByID(id)
     }
-
+    
+    @DeleteMapping("/api/user/delete")
     fun deleteAll() {
         userService!!.clear()
     }
