@@ -1,4 +1,9 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.model
+package ar.edu.unq.desapp.grupof.backenddesappapi.dto
+
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Operation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
+
 data class TransferDTO(
     val cryptoActive:String,
     val amount: Double,
@@ -25,9 +30,9 @@ data class TransferDTO(
                 getShippingAddress(order)
             )
         }
-        fun getShippingAddress(order: Order) : String {
-            if (order.operation == Operations.BUY) {
-                return order.user.walletAddress.toString()
+        private fun getShippingAddress(order: Order) : String {
+            return if (order.operation == Operation.BUY) {
+                order.user.walletAddress.toString()
             } else {
                 return order.user.cvu
             }

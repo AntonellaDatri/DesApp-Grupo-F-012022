@@ -10,36 +10,16 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @EnableAutoConfiguration
 class OrderController {
     @Autowired
-    private val cryptoQuoteService : OrderService? = null
-    @Autowired
-    private val cryptoAssetQuoteService : CryptoAssetQuoteService? = null
+    private val orderService : OrderService? = null
 
-    @GetMapping("/api/order")
-    fun getAll(): ResponseEntity<*> {
-        val orders = cryptoQuoteService!!.findAll()
-        val criptsPrice =  cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
-
-        val ordersDTO = orders.map {
-            OrderDTO.fromModel(it!!, criptsPrice[it.cryptoactive!!]!!.price.toDouble())
-        }
-        return ResponseEntity.ok().body(ordersDTO)
-    }
-
-    @GetMapping("/api/transaction")
-    fun get(@RequestParam(required = true) id : Int): ResponseEntity<Order> {
-        val list = cryptoQuoteService!!.findByID(id)
-        return ResponseEntity.ok().body(list)
-    }
-
-    @PostMapping("/api/transaction/create")
-    fun createIntention(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
-        val order : Order
+    @PostMapping("/api/order/create")
+    fun createOrder(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
+        val order : OrderDTO
         try {
             order = cryptoQuoteService!!.create(orderRequestDTO)
         } catch(e:Exception) {
@@ -47,6 +27,12 @@ class OrderController {
         }
         val criptoPrice =  cryptoAssetQuoteService!!.findByCryptoName(order.cryptoactive!!, LocalDateTime.now())
         return ResponseEntity.ok().body(OrderDTO.fromModel(order, criptoPrice.price.toDouble()))
+    }
+
+    @GetMapping("/api/order/active")
+    fun getActiveOrders(): ResponseEntity<*> {
+        val ordersDTO = orderService!!.getActive()
+        return ResponseEntity.ok().body(ordersDTO)
     }
 
     fun deleteByID(id: Int) {

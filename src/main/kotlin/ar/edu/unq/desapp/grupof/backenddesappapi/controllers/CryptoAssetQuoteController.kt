@@ -19,23 +19,23 @@ class CryptoAssetQuoteController {
 
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
-        val list : CryptoAssetQuote
-          try {
-              list = cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
-          }  catch (e:IllegalArgumentException) {
-              return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message);
-          }
-        return ResponseEntity.ok().body(list)
+        return try {
+            val list : CryptoAssetQuote =
+                cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
+            ResponseEntity.ok().body(list)
+        }  catch (e:IllegalArgumentException) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
     }
 
     @GetMapping("/api/10cryptoQuote")
     fun getCryptoAssetsQuote(): ResponseEntity<*> {
-        val list : MutableCollection<CryptoAssetQuote>
-        try {
-            list = cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now()).values
+        return try {
+            val list : MutableCollection<CryptoAssetQuote> =
+                cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now()).values
+            ResponseEntity.ok().body(list)
         }  catch (e:IllegalArgumentException) {
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message);
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.ok().body(list)
     }
 }

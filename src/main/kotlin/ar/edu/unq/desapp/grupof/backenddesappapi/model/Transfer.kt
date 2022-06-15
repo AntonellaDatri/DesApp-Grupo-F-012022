@@ -20,6 +20,8 @@ class Transfer {
     @Column
     var amountToTransfer:Double? = null
     @Column
+    var cryptoPrice:Double? = null
+    @Column
     var dateTime: Date = Date()
     @Column
     @Enumerated(EnumType.STRING)
@@ -27,8 +29,9 @@ class Transfer {
 
     constructor() : super()
     constructor(
-        order:Order, amountToTransfer: Double, executingUser: User
+        order:Order, amountToTransfer: Double, executingUser: User, cryptoPrice:Double
     ) {
+        this.cryptoPrice = cryptoPrice
         this.order = order
         this.executingUser = executingUser
         this.amountToTransfer = amountToTransfer
@@ -40,25 +43,9 @@ class Transfer {
         status = State.PENDING
     }
 
-    fun transferMoney(user: User){
-        if (order.operation == Operations.BUY && executingUser.id == user.id) {
-            executingUser.transferMoney(order.user.cvu)
-        } else if(order.operation == Operations.SELL && order.user.id == user.id) {
-            order.user.transferMoney(executingUser.cvu)
-        }  else {
-            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
-        }
-    }
-
     fun confirmReception(user: User){
-        if (order.operation == Operations.BUY && order.user.id == user.id) {
-            order.user.transferCrypto(executingUser.walletAddress!!)
-        } else if(order.operation == Operations.SELL && executingUser.id == user.id) {
-            order.user.transferMoney(executingUser.cvu)
-        } else {
-            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
-        }
-        val amountTotal = order.amount!! - amountToTransfer!!
+        transfer(user)
+        val amountTotal = order.amountToOperate!! - amountToTransfer!!
         order.setAmount(amountTotal)
         status = State.DONE
         calculateReputation()

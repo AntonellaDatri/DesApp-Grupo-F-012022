@@ -28,9 +28,19 @@ class OrderService {
         return order
     }
 
+    @Transactional
+    fun getActive(): List<OrderDTO> {
+        val activeOrders = repository!!.findByStateEquals(State.ACTIVE)
+        return activeOrders.map {
+            val cryptoPrice = getCryptoPrice(it!!)
+            OrderDTO.fromModel(it, cryptoPrice)
+        }
+    }
 
-    fun findByID(id: Int): Order {
-        return repository!!.findById(id).get()
+    @Transactional
+    fun findByID(id: Int): OrderDTO {
+        val order = repository!!.findById(id).get()
+        return OrderDTO.fromModel(order, getCryptoPrice(order))
     }
 
     @Transactional
@@ -40,5 +50,14 @@ class OrderService {
 
     fun deleteById(id: Int) {
         repository!!.deleteById(id)
+    }
+
+    private fun getCryptoPrice(order : Order) : Double {
+        return cryptoAssetQuoteService!!.findByCryptoName(order.cryptoName!!, LocalDateTime.now()).price.toDouble()
+    }
+
+    fun save(order: Order): Order {
+        repository!!.save(order)
+        return order
     }
 }

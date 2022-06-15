@@ -1,4 +1,7 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.model
+package ar.edu.unq.desapp.grupof.backenddesappapi.dto
+
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Operation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 
 
 data class OrderRequestDTO(
@@ -7,7 +10,8 @@ data class OrderRequestDTO(
     val quote: Double,
     val argAmount:Double,
     val user: Int,
-    val operation:Operations){
+    val operation: Operation
+){
 
     companion object {
         fun fromModel(order: Order, cryptoPrice: Double): OrderRequestDTO {

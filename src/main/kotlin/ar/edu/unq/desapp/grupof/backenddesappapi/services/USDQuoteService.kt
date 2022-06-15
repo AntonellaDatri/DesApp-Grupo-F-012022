@@ -1,34 +1,18 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.model
+package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoAssetQuoteRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.springframework.stereotype.Service
 import retrofit2.GsonConverterFactory
 import retrofit2.Retrofit
 import java.io.IOException
-import java.util.*
 
-
-class VolumeOperationsDTO {
-    lateinit var user : UserDTO
-    lateinit var dateTime: Date
-    var totalAmountARS : Double = 0.0
-    var totalAmountUSD : Double = 0.0
-    lateinit var listActives: List<TransferActivesDTO>
-    constructor() : super()
-    constructor(
-        user: UserDTO, listActives : List<TransferActivesDTO>
-    ) : super() {
-        this.user = user
-        this.dateTime = Date()
-        this.totalAmountARS = listActives.sumOf{ it.arsAmount }
-        this.totalAmountUSD = listActives.sumOf { it.arsAmount * findUsdQuote().toDouble()}
-        this.listActives = listActives
-    }
-
-    fun createRetroFit() : Retrofit {
+@Service
+class USDQuoteService {
+    private fun createRetroFit() : Retrofit {
         val token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYzNTU3NTYsInR5cGUiOiJleHRlcm5hbCIsInVzZXIiOiJhbGRpaWkuMTIzMzVAZ21haWwuY29tIn0.T0NLDQ9rYglQOpAiVyGDj4uo_swvVeskW1Z7H_anKEUMwC9DmzJorPhIdxbzJPXkTrvdnCO4qG48hAYncyb_kQ"
         val okHttpClientBuilder = OkHttpClient.Builder()
         okHttpClientBuilder
@@ -48,7 +32,7 @@ class VolumeOperationsDTO {
             .build()
     }
 
-    private fun findUsdQuote(): String {
+    fun findUsdQuote(): String {
 
         val retrofit = createRetroFit()
         val response =

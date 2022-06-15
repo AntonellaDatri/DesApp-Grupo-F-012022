@@ -34,7 +34,7 @@ class Order {
     constructor() : super()
     constructor(
         cryptoActive:String, amount: Double, user: User,
-        operation:Operations
+        operation:Operation
     ) : super() {
         this.cryptoactive = cryptoActive
         this.amount = amount
@@ -46,7 +46,9 @@ class Order {
         if (amount < 0.0){
             throw InvalidTransferAmount("The amount of the transfer is greater than the amount of the intention.")
         }else if (amount == 0.0){
-            this.status = State.DONE
+            this.state = State.DONE
+        }else{
+            this.state = State.ACTIVE
         }
         this.amount = amount
     }
