@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.OrderService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,28 +16,29 @@ class OrderController {
 
     @PostMapping("/api/order/create")
     fun createOrder(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
-        val order : OrderDTO
-        try {
-            order = orderService!!.create(orderRequestDTO)
+        return try {
+            val order = orderService!!.create(orderRequestDTO)
+            ResponseEntity.ok().body(order)
         } catch(e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.ok().body(order)
+
     }
 
-    @GetMapping("/api/order")
+    @GetMapping("/api/order/id")
     fun getOrder(@RequestParam(required = true) id : Int): ResponseEntity<*> {
-        val order : OrderDTO
-        try { order = orderService!!.findByID(id) }
-        catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        return try {
+            val order = orderService!!.findByID(id)
+            ResponseEntity.ok().body(order)
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.ok().body(order)
+
     }
 
     @GetMapping("/api/order/all")
     fun getAll(): ResponseEntity<*> {
-        val ordersDTO = orderService!!.getAll()
+        val ordersDTO = orderService!!.findAll()
         return ResponseEntity.ok().body(ordersDTO)
     }
 
@@ -48,8 +48,13 @@ class OrderController {
         return ResponseEntity.ok().body(ordersDTO)
     }
 
-    @DeleteMapping("/api/order/delete")
+    @DeleteMapping("/api/order/id/delete")
     fun deleteByID(id: Int) {
-        orderService!!.deleteById(id)
+        orderService!!.deleteByID(id)
+    }
+
+    @DeleteMapping("/api/order/delete")
+    fun deleteAll() {
+        orderService!!.deleteAll()
     }
 }

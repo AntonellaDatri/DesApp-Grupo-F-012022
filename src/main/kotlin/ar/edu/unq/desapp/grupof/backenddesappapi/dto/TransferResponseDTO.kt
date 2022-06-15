@@ -1,12 +1,12 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.Operation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
 
-data class TransferDTO(
+data class TransferResponseDTO(
     val cryptoActive:String,
-    val amount: Double,
+    val amountToOperate: Double,
     val quote: Double,
     val amountToTransfer:Double,
     val user: String,
@@ -16,10 +16,10 @@ data class TransferDTO(
     ){
 
     companion object {
-        fun fromModel(transfer: Transfer): TransferDTO {
+        fun fromModel(transfer: Transfer): TransferResponseDTO {
             val order = transfer.order
             val user = order.user
-            return TransferDTO(
+            return TransferResponseDTO(
                 order.cryptoName!!,
                 order.amountToOperate!!,
                 transfer.cryptoPrice!!,

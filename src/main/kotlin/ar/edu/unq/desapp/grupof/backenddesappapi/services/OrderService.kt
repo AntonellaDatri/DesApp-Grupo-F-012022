@@ -1,9 +1,9 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
-import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderResponseDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.model.State
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.State
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.OrderRepository
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,44 +21,49 @@ class OrderService {
     private val cryptoAssetQuoteService : CryptoAssetQuoteService? = null
 
     @Transactional
-    fun create(orderDTO: OrderRequestDTO) : OrderDTO {
+    fun create(orderDTO: OrderRequestDTO) : OrderResponseDTO {
         val user = userRepository!!.findById(orderDTO.user).get()
-        val order = save(Order(orderDTO.cryptoActive, orderDTO.amount, user, orderDTO.operation))
+        val order = save(Order.fromModel(orderDTO, user))
         val cryptoPrice = getCryptoPrice(order)
-        return OrderDTO.fromModel(order, cryptoPrice)
+        return OrderResponseDTO.fromModel(order, cryptoPrice)
     }
 
     @Transactional
-    fun getAll(): List<OrderDTO> {
-        return findAll().map {
-            val cryptoPrice = getCryptoPrice(it!!)
-            OrderDTO.fromModel(it, cryptoPrice)
-        }
-    }
-
-    @Transactional
-    fun getActive(): List<OrderDTO> {
+    fun getActive(): List<OrderResponseDTO> {
         val activeOrders = repository!!.findByStateEquals(State.ACTIVE)
         return activeOrders.map {
             val cryptoPrice = getCryptoPrice(it!!)
-            OrderDTO.fromModel(it, cryptoPrice)
+            OrderResponseDTO.fromModel(it, cryptoPrice)
         }
     }
 
     @Transactional
-    fun findByID(id: Int): OrderDTO {
+    fun findByID(id: Int): OrderResponseDTO {
         val order = repository!!.findById(id).get()
-        return OrderDTO.fromModel(order, getCryptoPrice(order))
+        return OrderResponseDTO.fromModel(order, getCryptoPrice(order))
     }
 
     @Transactional
-    fun findAll(): List<Order?> {
-        return repository!!.findAll()
+    fun findOrderByID(id: Int): Order {
+        return repository!!.findById(id).get()
     }
 
     @Transactional
-    fun deleteById(id: Int) {
+    fun findAll(): List<OrderResponseDTO> {
+        return repository!!.findAll().map {
+            val cryptoPrice = getCryptoPrice(it!!)
+            OrderResponseDTO.fromModel(it, cryptoPrice)
+        }
+    }
+
+    @Transactional
+    fun deleteByID(id: Int) {
         repository!!.deleteById(id)
+    }
+    
+    @Transactional
+    fun deleteAll() {
+        repository!!.deleteAll()
     }
 
     private fun getCryptoPrice(order : Order) : Double {

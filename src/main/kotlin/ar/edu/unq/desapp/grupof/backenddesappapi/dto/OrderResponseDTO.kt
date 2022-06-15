@@ -3,7 +3,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import java.time.LocalDate
 
-data class OrderDTO(
+data class OrderResponseDTO(
     val hour:LocalDate,
     val cryptoActive:String,
     val amount: Double,
@@ -14,8 +14,8 @@ data class OrderDTO(
     val reputation:String){
 
     companion object {
-        fun fromModel(order: Order, cryptoPrice: Double): OrderDTO {
-            return OrderDTO(
+        fun fromModel(order: Order, cryptoPrice: Double): OrderResponseDTO {
+            return OrderResponseDTO(
                 LocalDate.now(),
                 order.cryptoName!!,
                 order.amountToOperate!!,

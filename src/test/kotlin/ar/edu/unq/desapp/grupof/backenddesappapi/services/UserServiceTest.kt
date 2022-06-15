@@ -1,6 +1,10 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -8,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest
 class UserServiceTest {
 	@Autowired
 	private val userService: UserService? = null
-//	private val userFactory : UserFactory = UserFactory()
+	private val userFactory : UserFactory = UserFactory()
 //	@Test
 //	fun registerUser() {
-//		val userToSave = userFactory.anyUser()
-//		userService!!.register(UserDTO.fromModel(userToSave))
+//	val userToSave = UserRequestDTO.fromModel(userFactory.anyUser())
+//	userService!!.register(userToSave)
 //		assertDoesNotThrow { userService.register(userToSave) }
 //	}
-//
+
 //	@Test
 //	fun findById() {
 //		val userToSave = userFactory.anyUser(walletAddress = 12345677)
@@ -85,6 +89,6 @@ class UserServiceTest {
 
 	@AfterEach
 	fun clear() {
-		userService!!.clear()
+		userService!!.deleteAll()
 	}
 }

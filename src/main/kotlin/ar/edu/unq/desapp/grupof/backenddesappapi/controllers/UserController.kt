@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -16,31 +15,39 @@ class UserController {
     private val userService: UserService? = null
 
     @PostMapping("/api/user/register")
-    fun registerUser(@RequestBody newUser : UserRequestDTO ): ResponseEntity<*> {
-        val user : UserDTO
-        try {
-            user = userService!!.register(newUser)
+    fun registerUser(@RequestBody userRequestDTO: UserRequestDTO ): ResponseEntity<*> {
+        return try {
+            val user = userService!!.register(userRequestDTO)
+            ResponseEntity.ok().body(user)
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
-        }
-        return ResponseEntity.ok().body(user)
     }
 
-    @GetMapping("/api/user")
-    fun getUser(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
-        val user : UserDTO
-        try { user = userService!!.findByWalletAddress(walletAddress) }
-        catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+    @GetMapping("/api/user/id")
+    fun getUser(@RequestParam(required = true) id : Int): ResponseEntity<*> {
+        return try {
+            val user = userService!!.findByID(id)
+            ResponseEntity.ok().body(user)
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.ok().body(user)
+    }
+
+    @GetMapping("/api/user/walletAddress")
+    fun getUserByWA(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
+        return try {
+            val user = userService!!.findByWalletAddress(walletAddress)
+            ResponseEntity.ok().body(user)
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
     }
 
     @GetMapping("/api/user/all")
-    fun getUsers(): ResponseEntity<*> {
-        val list = userService!!.findAll()
-        return ResponseEntity.ok().body(list)
+    fun getAll(): ResponseEntity<*> {
+        val users = userService!!.findAll()
+        return ResponseEntity.ok().body(users)
     }
 
     @DeleteMapping("/api/user/id/delete")
@@ -50,6 +57,6 @@ class UserController {
     
     @DeleteMapping("/api/user/delete")
     fun deleteAll() {
-        userService!!.clear()
+        userService!!.deleteAll()
     }
 }

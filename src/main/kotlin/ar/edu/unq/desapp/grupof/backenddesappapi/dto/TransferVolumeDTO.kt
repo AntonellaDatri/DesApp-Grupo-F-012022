@@ -3,15 +3,15 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 import java.util.*
 
 
-class VolumeOperationsDTO {
-    lateinit var user : UserDTO
+class TransferVolumeDTO {
+    lateinit var user : UserResponseDTO
     lateinit var dateTime: Date
     var totalAmountARS : Double = 0.0
     var totalAmountUSD : Double = 0.0
     lateinit var listActives: List<TransferActivesDTO>
     constructor() : super()
     constructor(
-        user: UserDTO, listActives : List<TransferActivesDTO>, USDQuote : Double
+        user: UserResponseDTO, listActives : List<TransferActivesDTO>, USDQuote : Double
     ) : super() {
         this.user = user
         this.dateTime = Date()

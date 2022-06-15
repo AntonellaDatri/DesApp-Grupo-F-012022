@@ -14,5 +14,4 @@ interface UserRepository: CrudRepository<User?, Int?> {
     override fun findAll(): List<User>
     override fun deleteById(id: Int)
     override fun deleteAll()
-//    fun clear()
 }

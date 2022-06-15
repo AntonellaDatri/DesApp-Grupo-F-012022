@@ -1,6 +1,9 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidTransferAmount
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.State
 import javax.persistence.*
 
 @Entity
@@ -12,10 +15,10 @@ class Order {
     @Column
     var cryptoName : String? = null
     @Column
-    var amountToOperate:Double? = null
+    var amountToOperate:Double = 0.0
     @Column
     @Enumerated(EnumType.STRING)
-    var operation:Operation? = null
+    var operation: Operation? = null
     @ManyToOne
     @JoinColumn(name = "orders")
     lateinit var user: User
@@ -23,15 +26,17 @@ class Order {
     val transfers: List<Transfer>? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var state:State? = State.ACTIVE
+    var state: State? = State.ACTIVE
+    var amountToSubstract:Double = amountToOperate
 
     constructor() : super()
     constructor(
         cryptoActive:String, amount: Double, user: User,
-        operation:Operation
+        operation: Operation
     ) : super() {
         this.cryptoName = cryptoActive
         this.amountToOperate = amount
+        this.amountToSubstract = amount
         this.user= user
         this.operation = operation
     }
@@ -44,6 +49,17 @@ class Order {
         }else{
             this.state = State.ACTIVE
         }
-        this.amountToOperate = amount
+        this.amountToSubstract = amount
+    }
+
+    companion object {
+        fun fromModel(orderRequestDTO: OrderRequestDTO, user: User): Order {
+            return Order(
+                orderRequestDTO.cryptoActive,
+                orderRequestDTO.amountToOperate,
+                user,
+                orderRequestDTO.operation
+            )
+        }
     }
 }

@@ -54,7 +54,6 @@ class SecurityCFG : WebSecurityConfigurerAdapter() {
             .and()
             .cors().and()
             .headers().frameOptions().disable();
-
     }
 
     @Throws(java.lang.Exception::class)

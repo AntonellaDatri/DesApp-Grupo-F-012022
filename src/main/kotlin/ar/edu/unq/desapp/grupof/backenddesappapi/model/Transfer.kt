@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidUserTransfer
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.State
 import java.util.Date
 import javax.persistence.*
 
@@ -25,7 +27,7 @@ class Transfer {
     var dateTime: Date = Date()
     @Column
     @Enumerated(EnumType.STRING)
-    var state:State = State.ACTIVE
+    var state: State = State.ACTIVE
 
     constructor() : super()
     constructor(
@@ -45,10 +47,45 @@ class Transfer {
 
     fun confirmReception(user: User){
         transfer(user)
-        val amountTotal = order.amountToOperate!! - amountToTransfer!!
+        val amountTotal = order.amountToSubstract!! - amountToTransfer!!
         order.setAmount(amountTotal)
         state = State.DONE
         calculateReputation()
+    }
+
+
+    fun cancel(user: User){
+        if (order.user.id == user.id || executingUser.id!! == user.id) {
+             user.points -= 20
+            state = State.CANCEL
+        }
+    }
+
+    private fun transferMoney(user: User){
+        if (isBuyOperation() && isExecutingUser(user)) {
+            executingUser.transferMoney(order.user.cvu)
+        } else if(isSellOperation() && isCreatorUser(user)) {
+            order.user.transferMoney(executingUser.cvu)
+        }  else {
+            throw InvalidUserTransfer("El usuario no puede hacer esta accion")
+        }
+    }
+
+    private fun transfer(user : User) {
+        if (isBuyOperation() && isCreatorUser(user)) {
+            order.user.transferCrypto(executingUser.walletAddress!!)
+        } else if(isSellOperation() && isExecutingUser(user)) {
+            order.user.transferMoney(executingUser.cvu)
+        } else {
+            throw InvalidUserTransfer("El usuario no puede hacer esta accion")
+        }
+    }
+
+    private fun performedWithin30Min(): Boolean {
+        val actualDate = Date()
+        val diff: Long = actualDate.time - dateTime.time
+        val min = 1800000
+        return diff <= min
     }
 
     private fun calculateReputation() {
@@ -62,37 +99,19 @@ class Transfer {
         order.user.amountOperations += 1
     }
 
-    fun cancel(user: User){
-        if (order.user.id == user.id || executingUser.id!! == user.id) {
-             user.points -= 20
-            state = State.CANCEL
-        }
+    private fun isExecutingUser(user: User) : Boolean {
+        return executingUser.id == user.id
     }
-
-    private fun performedWithin30Min(): Boolean {
-        val actualDate = Date()
-        val diff: Long = actualDate.time - dateTime.time
-        val min = 1800000
-        return diff <= min
+    private fun isCreatorUser(user: User) : Boolean {
+        return order.user.id == user.id
     }
-
-    private fun transferMoney(user: User){
-        if (order.operation == Operation.BUY && executingUser.id == user.id) {
-            executingUser.transferMoney(order.user.cvu)
-        } else if(order.operation == Operation.SELL && order.user.id == user.id) {
-            order.user.transferMoney(executingUser.cvu)
-        }  else {
-            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
-        }
+    private fun isSellOperation() :Boolean {
+        return isOperation(Operation.SELL)
     }
-
-    private fun transfer(user : User) {
-        if (order.operation == Operation.BUY && order.user.id == user.id) {
-            order.user.transferCrypto(executingUser.walletAddress!!)
-        } else if(order.operation == Operation.SELL && executingUser.id == user.id) {
-            order.user.transferMoney(executingUser.cvu)
-        } else {
-            throw InvalidUserTransfer("The User doesn't belong to the transfer.")
-        }
+    private fun isBuyOperation() :Boolean {
+        return isOperation(Operation.BUY)
+    }
+    private fun isOperation(operation: Operation) :Boolean {
+        return order.operation == operation
     }
 }

@@ -21,7 +21,7 @@ class TransferController {
             val transferDTO = transferService!!.createTransfer(transferRequestDTO)
             //Return a DTO to show only the necessary things.
             ResponseEntity.ok().body(transferDTO)
-        }catch (e:Exception) {
+        } catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
 
@@ -29,33 +29,32 @@ class TransferController {
 
     @PostMapping("/api/transfer/make")
     fun makeTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
-        try {
+        return try {
             transferService!!.makeTransfer(transferID, userID)
+            ResponseEntity.status( HttpStatus.OK).body("Successful transfer")
         }catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.status( HttpStatus.OK).body("Successful transfer")
     }
 
     @PostMapping("/api/transfer/confirm")
     fun confirmTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
-        try {
+        return try {
             transferService!!.confirmTransfer(transferID, userID)
-        }catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+            ResponseEntity.status( HttpStatus.OK).body("Confirmed transfer")
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.status( HttpStatus.OK).body("Confirmed transfer")
-
     }
 
     @PostMapping("/api/transfer/cancel")
     fun cancelTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<*> {
-        try {
+        return try {
             transferService!!.cancelTransfer(transferID, userID)
-        }catch (e:Exception) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+            ResponseEntity.status( HttpStatus.OK).body("Transfer canceled")
+        } catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
-        return ResponseEntity.status( HttpStatus.OK).body("Transfer canceled")
     }
 
     @GetMapping("/api/transfer/activityBetween")
@@ -64,8 +63,8 @@ class TransferController {
         return ResponseEntity.ok().body(volumeOperationsDTO)
     }
 
-    @GetMapping("/api/transfer")
-    fun get(@RequestParam(required = true) id : Int): ResponseEntity<*> {
+    @GetMapping("/api/transfer/id")
+    fun getTransfer(@RequestParam(required = true) id : Int): ResponseEntity<*> {
         return try {
             val transfer = transferService!!.findByID(id)
             ResponseEntity.ok().body(transfer)
@@ -80,8 +79,13 @@ class TransferController {
         return ResponseEntity.ok().body(transfersDTO)
     }
 
-    @DeleteMapping("/api/transfer/delete")
+    @DeleteMapping("/api/transfer/id/delete")
     fun deleteByID(id: Int) {
-        transferService!!.deleteById(id)
+        transferService!!.deleteByID(id)
+    }
+
+    @DeleteMapping("/api/transfer/delete")
+    fun deleteAll() {
+        transferService!!.deleteAll()
     }
 }

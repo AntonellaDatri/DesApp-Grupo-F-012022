@@ -15,8 +15,7 @@ data class TransferActivesDTO(
                 order.cryptoName!!,
                 order.amountToOperate!!,
                 transfer.cryptoPrice!!,
-                transfer.cryptoPrice!! * order.amountToOperate!!,
-
+                transfer.cryptoPrice!! * order.amountToOperate!!
             )
         }
     }

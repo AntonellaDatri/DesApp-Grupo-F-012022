@@ -11,7 +11,7 @@ import java.util.*
 
 @Configuration
 @Repository
-interface ActivityTransactionRepository: CrudRepository<Transfer?, Int?> {
+interface TransferRepository: CrudRepository<Transfer?, Int?> {
     fun findById(id: Int?): Transfer?
 
     @Query(value = "SELECT t FROM Transfer t WHERE t.executingUser.id = :userId AND t.dateTime BETWEEN :startDate AND :endDate")
@@ -22,4 +22,5 @@ interface ActivityTransactionRepository: CrudRepository<Transfer?, Int?> {
     ): List<Transfer?>
     override fun findAll(): List<Transfer?>
     override fun deleteById(id: Int)
+    override fun deleteAll()
 }
