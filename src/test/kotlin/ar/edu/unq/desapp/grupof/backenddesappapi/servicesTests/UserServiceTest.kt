@@ -1,7 +1,8 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.services
+package ar.edu.unq.desapp.grupof.backenddesappapi.servicesTests
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Test

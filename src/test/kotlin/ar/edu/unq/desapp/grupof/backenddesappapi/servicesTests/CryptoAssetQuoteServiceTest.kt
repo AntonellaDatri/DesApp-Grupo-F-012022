@@ -1,5 +1,6 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.services
+package ar.edu.unq.desapp.grupof.backenddesappapi.servicesTests
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired

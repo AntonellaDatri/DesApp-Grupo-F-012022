@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupof.backenddesappapi.services
+package ar.edu.unq.desapp.grupof.backenddesappapi.servicesTests
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.IntentionToOperateFactory
 import org.junit.jupiter.api.Test
