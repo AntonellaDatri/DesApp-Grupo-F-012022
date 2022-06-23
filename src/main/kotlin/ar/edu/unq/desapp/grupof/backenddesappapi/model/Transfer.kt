@@ -16,7 +16,7 @@ class Transfer {
     var id : Int? = null
     @ManyToOne
     lateinit var  order : Order
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "transfer")
     lateinit var executingUser : User
     @Column
@@ -47,7 +47,7 @@ class Transfer {
 
     fun confirmReception(user: User){
         transfer(user)
-        val amountTotal = order.amountToSubstract!! - amountToTransfer!!
+        val amountTotal = order.amountToSubtract - amountToTransfer!!
         order.setAmount(amountTotal)
         state = State.DONE
         calculateReputation()
@@ -58,6 +58,8 @@ class Transfer {
         if (order.user.id == user.id || executingUser.id!! == user.id) {
              user.points -= 20
             state = State.CANCEL
+        } else {
+            throw InvalidUserTransfer("El usuario no puede cancelar esta transferencia")
         }
     }
 

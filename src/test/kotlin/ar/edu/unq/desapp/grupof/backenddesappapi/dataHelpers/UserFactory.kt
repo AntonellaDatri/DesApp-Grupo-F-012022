@@ -13,5 +13,4 @@ class UserFactory() {
 
         return User(name, lastName, email, password, cvu, walletAddress, address)
     }
-
 }

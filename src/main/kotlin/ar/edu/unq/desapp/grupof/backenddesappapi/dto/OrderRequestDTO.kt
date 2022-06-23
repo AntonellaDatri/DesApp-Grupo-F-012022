@@ -15,7 +15,7 @@ data class OrderRequestDTO(
         fun fromModel(order: Order): OrderRequestDTO {
             return OrderRequestDTO(
                 order.cryptoName!!,
-                order.amountToOperate!!,
+                order.amountToOperate,
                 order.user.id!!,
                 order.operation!!
             )

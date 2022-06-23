@@ -1,6 +1,10 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserResponseDTO
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -8,26 +12,24 @@ import org.springframework.boot.test.context.SpringBootTest
 class UserControllerTests {
 	@Autowired
 	private val userController: UserController? = null
-//	private val userFactory : UserFactory = UserFactory()
+	private val userFactory : UserFactory = UserFactory()
 
-//	@Test
-//	fun registerUser() {
-//		val userToSave =userFactory.anyUser(walletAddress = 98765432)
-//		userController!!.registerUser(userToSave)
-//		val user = userController.getUser(98765432).body
-//		val userName = (user as UserDTO).name
-//		assert(userName == userToSave.name)
-//	}
+	@Test
+	fun registerUser() {
+		val userToSave = UserRequestDTO.fromModel(userFactory.anyUser(walletAddress = 98765432))
+		userController!!.registerUser(userToSave)
+		val user = userController.getUserByWA(98765432).body
+		val userName = (user as UserResponseDTO).name
+		assert(userName == userToSave.name)
+	}
 //	@Test
 //	fun registerUserWithSameCVU() {
-//		val userToSave = userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo@mail.com", walletAddress = 11111111)
+//		val userToSave = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo@mail.com", walletAddress = 11111111))
 //		userController!!.registerUser(userToSave)
-//		val userToSaveRepeat = userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo2@mail.com", walletAddress = 22222222)
-//		userController!!.registerUser(userToSave)
-//		val hola = userController!!.registerUser(userToSaveRepeat).body
-//		val response = userController.allUsers().body
-//		assert("userName" == userController!!.registerUser(userToSaveRepeat).body )
+//		val userToSaveRepeat = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo2@mail.com", walletAddress = 22222222))
+//		userController.registerUser(userToSaveRepeat).body
 //	}
+
 //	@Test
 //	fun getUser() {
 //		val userToSave =userFactory.anyUser(walletAddress = 12345678)

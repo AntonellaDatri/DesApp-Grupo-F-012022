@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
+import ar.edu.unq.desapp.grupof.backenddesappapi.exceptions.InvalidDataUser
 import org.jetbrains.annotations.NotNull
 import javax.persistence.*
 
@@ -14,7 +15,7 @@ import javax.persistence.*
 class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int? = null
+    var id: Int? = null
     @Column(nullable = false, unique = true)
     var walletAddress : Int? = null
     @NotNull
@@ -52,7 +53,7 @@ class User{
         validateData(name, lastName, email, address, password, cvu, walletAddress)
     }
 
-    fun validateData(
+    private fun validateData(
         name: String?,
         lastName: String?,
         email: String?,
@@ -61,13 +62,13 @@ class User{
         cvu: String?,
         walletAddress: Int?
     ) {
-        if (!validateName(name)) {throw Exception("El nombre no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.name = name!! }
-        if (!validateLastName(lastName)) {throw Exception("El apellido no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.lastName = lastName!!}
-        if (!validateEmail(email)){throw Exception("El mail debe ser un mail valido")} else { this.email = email!! }
-        if (!validatePassword(password)) {throw Exception("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres")}else { this.password = password!! }
-        if (!validateAddress(address!!)) {throw Exception("La direccion no puede ser vacia y debe tener entre 10 y 30 caracteres")}else { this.address = address }
-        if (!validateCVU(cvu!!)) {throw Exception("El CVU debe tener 22 caracteres")} else { this.cvu = cvu }
-        if (!validateAddressWallet(walletAddress!!)) {throw Exception("La billetera debe tener 8 caracteres")}else {    this.walletAddress = walletAddress}
+        if (!validateName(name)) {throw InvalidDataUser("El nombre no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.name = name!! }
+        if (!validateLastName(lastName)) {throw InvalidDataUser("El apellido no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.lastName = lastName!!}
+        if (!validateEmail(email)){throw InvalidDataUser("El mail debe ser un mail valido")} else { this.email = email!! }
+        if (!validatePassword(password)) {throw InvalidDataUser("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres")}else { this.password = password!! }
+        if (!validateAddress(address!!)) {throw InvalidDataUser("La direccion no puede ser vacia y debe tener entre 10 y 30 caracteres")}else { this.address = address }
+        if (!validateCVU(cvu!!)) {throw InvalidDataUser("El CVU debe tener 22 caracteres")} else { this.cvu = cvu }
+        if (!validateAddressWallet(walletAddress!!)) {throw InvalidDataUser("La billetera debe tener 8 caracteres")}else {    this.walletAddress = walletAddress}
     }
 
     private fun validateName(name: String?): Boolean {

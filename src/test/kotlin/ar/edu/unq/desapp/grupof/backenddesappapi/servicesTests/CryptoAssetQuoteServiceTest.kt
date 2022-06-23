@@ -14,19 +14,19 @@ class CryptoAssetQuoteServiceTest {
     @Test
     fun getCryptoAssetQuoteUpperCase() {
         val response = cryptoAssetQuoteService!!.findByCryptoName("BNBUSDT", LocalDateTime.now())
-        val quoteAssetName = response?.symbol
-        val price = response?.price
-        assert(quoteAssetName != null && quoteAssetName == "BNBUSDT")
-        assert(price != null && price == response.price)
+        val quoteAssetName = response.symbol
+        val price = response.price
+        assert(quoteAssetName == "BNBUSDT")
+        assert(price == response.price)
     }
 
     @Test
     fun getCryptoAssetQuoteLowerCas() {
         val response = cryptoAssetQuoteService!!.findByCryptoName("bnbusdt", LocalDateTime.now())
-        val quoteAssetName = response?.symbol
-        val price = response?.price
-        assert(quoteAssetName != null && quoteAssetName == "BNBUSDT")
-        assert(price != null && price == response.price)
+        val quoteAssetName = response.symbol
+        val price = response.price
+        assert(quoteAssetName == "BNBUSDT")
+        assert(price == response.price)
     }
 
     @Test

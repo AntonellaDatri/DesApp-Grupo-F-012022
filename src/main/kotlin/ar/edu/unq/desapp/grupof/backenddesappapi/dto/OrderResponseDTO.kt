@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
 import java.time.LocalDate
 
 data class OrderResponseDTO(
@@ -10,6 +11,7 @@ data class OrderResponseDTO(
     val quote: Double,
     val argAmount:Double,
     val user: String,
+    val operation : Operation,
     val amountOperations:Int,
     val reputation:String){
 
@@ -18,10 +20,11 @@ data class OrderResponseDTO(
             return OrderResponseDTO(
                 LocalDate.now(),
                 order.cryptoName!!,
-                order.amountToOperate!!,
+                order.amountToOperate,
                 cryptoPrice,
-                cryptoPrice * order.amountToOperate!!,
+                cryptoPrice * order.amountToOperate,
                 order.user.name + " " +order.user.lastName,
+                order.operation!!,
                 order.user.amountOperations,
                 if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones"
             )

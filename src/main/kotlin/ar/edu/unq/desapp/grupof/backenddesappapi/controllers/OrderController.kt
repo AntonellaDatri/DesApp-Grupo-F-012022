@@ -42,6 +42,12 @@ class OrderController {
         return ResponseEntity.ok().body(ordersDTO)
     }
 
+    @GetMapping("/api/order/allOrders")
+    fun getAllOrders(): ResponseEntity<*> {
+        val orders = orderService!!.findAllOrders()
+        return ResponseEntity.ok().body(orders)
+    }
+
     @GetMapping("/api/order/active")
     fun getActiveOrders(): ResponseEntity<*> {
         val ordersDTO = orderService!!.getActive()

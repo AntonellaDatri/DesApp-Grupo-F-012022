@@ -26,8 +26,8 @@ class Order {
     val transfers: List<Transfer>? = null
     @Column
     @Enumerated(EnumType.STRING)
-    var state: State? = State.ACTIVE
-    var amountToSubstract:Double = amountToOperate
+    var state: State = State.ACTIVE
+    var amountToSubtract:Double = amountToOperate
 
     constructor() : super()
     constructor(
@@ -36,7 +36,7 @@ class Order {
     ) : super() {
         this.cryptoName = cryptoActive
         this.amountToOperate = amount
-        this.amountToSubstract = amount
+        this.amountToSubtract = amount
         this.user= user
         this.operation = operation
     }
@@ -49,7 +49,7 @@ class Order {
         }else{
             this.state = State.ACTIVE
         }
-        this.amountToSubstract = amount
+        this.amountToSubtract = amount
     }
 
     companion object {

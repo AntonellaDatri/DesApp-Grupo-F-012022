@@ -4,89 +4,95 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.dataHelpers.UserFactory
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.DataIntegrityViolationException
 
 @SpringBootTest
 class UserServiceTest {
 	@Autowired
 	private val userService: UserService? = null
 	private val userFactory : UserFactory = UserFactory()
-//	@Test
-//	fun registerUser() {
-//	val userToSave = UserRequestDTO.fromModel(userFactory.anyUser())
-//	userService!!.register(userToSave)
-//		assertDoesNotThrow { userService.register(userToSave) }
-//	}
+	private lateinit var userToSave : UserRequestDTO
+	@BeforeEach
+	fun setUp(){
+		val user = userFactory.anyUser()
+		userToSave = UserRequestDTO.fromModel(user)
+	}
 
-//	@Test
-//	fun findById() {
-//		val userToSave = userFactory.anyUser(walletAddress = 12345677)
-//		val userSaved = userService!!.register(userToSave)
-//		val user = userService.findByID(userSaved.id!!)
-//		assert(user.walletAddress == 12345677)
-//	}
-//	@Test
-//	fun findByWalletAddess() {
-//		val userToSave = userFactory.anyUser(walletAddress = 12345677)
-//		userService!!.register(userToSave)
-//		val user = userService.findByWalletAddress(12345677)
-//		assert(user.walletAddress == 12345677)
-//	}
-//
-//	@Test
-//	fun registerUserSameCVU() {
-//		val userToSave = userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo@mail.com", walletAddress = 11111111)
-//		userService!!.register(userToSave)
-//		val userToSaveRepeat = userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo2@mail.com", walletAddress = 22222222)
-//		assertThrows<DataIntegrityViolationException> { userService.register(userToSaveRepeat) }
-//	}
-//
-//	@Test
-//	fun registerUserSameEmail() {
-//		val userToSave = userFactory.anyUser(cvu = "1111111111111111111111", email = "ejemplo@mail.com", walletAddress = 11111111)
-//		userService!!.register(userToSave)
-//		val userToSaveRepeat = userFactory.anyUser(cvu = "1111111111111111111122", email = "ejemplo@mail.com", walletAddress = 22222222)
-//		assertThrows<DataIntegrityViolationException> { userService.register(userToSaveRepeat) }
-//	}
-//
-//
-//	@Test
-//	fun findAllUser() {
-//		val user1 =userFactory.anyUser()
-//		val user2 =userFactory.anyUser(cvu = "1111111111111111111122", email = "ejemplo2@mail.com", walletAddress = 22222222)
-//
-//		userService!!.register(user1)
-//		userService.register(user2)
-//		val list = userService.findAll()
-//		assert(list.size == 2)
-//	}
-//
-//	@Test
-//	fun invalidPasswordUserNoUppercase() {
-//		val user = userFactory.anyUser(password = "password@")
-//		assertThrows<Exception> { userService!!.register(user) }
-//	}
-//
-//	@Test
-//	fun invalidPasswordUserNoLowercase() {
-//		val user = userFactory.anyUser(password = "PASSWORD@")
-//		assertThrows<Exception> { userService!!.register(user) }
-//	}
-//
-//	@Test
-//	fun invalidPasswordUserNoSpecialCharacter() {
-//		val user = userFactory.anyUser(password = "Password")
-//		assertThrows<Exception> { userService!!.register(user) }
-//	}
-//
-//	@Test
-//	fun invalidPasswordUserLessMinimum() {
-//		val user = userFactory.anyUser(password = "Pass@")
-//		assertThrows<Exception> { userService!!.register(user) }
-//	}
+	@Test
+	fun registerUser() {
+		val userResponseDTO = userService!!.register(userToSave)
+		assertThrows<DataIntegrityViolationException> { userService.register(userToSave) }
+		assert(userResponseDTO.walletAddress == 11111111)
+	}
+
+	@Test
+	fun registerUserSameCVU() {
+		val userToSave = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo@mail.com", walletAddress = 11111111))
+		userService!!.register(userToSave)
+		val userToSaveRepeat = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1234567891234567891235", email = "ejemplo2@mail.com", walletAddress = 22222222))
+		assertThrows<DataIntegrityViolationException> { userService.register(userToSaveRepeat) }
+	}
+
+	@Test
+	fun registerUserSameEmail() {
+		val userToSave = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1111111111111111111111", email = "ejemplo@mail.com", walletAddress = 11111111))
+		userService!!.register(userToSave)
+		val userToSaveRepeat = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1111111111111111111122", email = "ejemplo@mail.com", walletAddress = 22222222))
+		assertThrows<DataIntegrityViolationException> { userService.register(userToSaveRepeat) }
+	}
+
+	@Test
+	fun findById() {
+		//En conjunto fall solo no, no entiendo
+		userService!!.register(userToSave)
+		val userId = userService.findAllUsers().first().id
+		val userFind = userService.findByID(userId!!)
+		assert(userFind.walletAddress == userToSave.walletAddress)
+	}
+
+	@Test
+	fun noUserByID() {
+		assertThrows<Exception>("No hay usuario con ese ID") { userService!!.findByID(1)}
+	}
+
+	@Test
+	fun findByWalletAddress() {
+		userService!!.register(userToSave)
+		val userFind = userService.findByWalletAddress(userToSave.walletAddress)
+		assert(userFind.walletAddress == userToSave.walletAddress)
+	}
+
+	@Test
+	fun noUserByWalletAddress() {
+		assertThrows<Exception>("No hay un usuario con esa billetera") { userService!!.findByWalletAddress(12345678)}
+	}
+	@Test
+	fun findUserById() {
+		//En conjunto fall solo no, no entiendo
+		userService!!.register(userToSave)
+		val userId = userService.findAllUsers().first().id
+		val userFind = userService.findUserByID(userId!!)
+		assert(userFind.id == userId)
+	}
+
+	@Test
+	fun noUserId() {
+		assertThrows<Exception>("No hay usuario con ese ID") { userService!!.findUserByID(1)}
+	}
+
+	@Test
+	fun findAllUser() {
+		val user2 = UserRequestDTO.fromModel(userFactory.anyUser(cvu = "1111111111111111111122", email = "ejemplo2@mail.com", walletAddress = 22222222))
+		userService!!.register(userToSave)
+		userService.register(user2)
+		val list = userService.findAll()
+		assert(list.size == 2)
+	}
 
 	@AfterEach
 	fun clear() {

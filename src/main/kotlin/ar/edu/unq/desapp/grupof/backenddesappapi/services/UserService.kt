@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserResponseDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,10 +18,9 @@ class UserService {
     fun register(userRequestDTO: UserRequestDTO): UserResponseDTO {
         try {
             val user = User.fromModel(userRequestDTO)
-            //user.validateData(user.name, user.lastName, user.email, user.address, user.password, user.cvu, user.walletAddress)
             return UserResponseDTO.fromModel(repository!!.save(user))
-        } catch (e:Exception) {
-            throw e
+        } catch (error: DataIntegrityViolationException) {
+            throw error
         }
     }
 
@@ -29,7 +29,7 @@ class UserService {
         try {
             return UserResponseDTO.fromModel(findUserByID(id))
         } catch (e:Exception) {
-            throw Exception("There is no user with this ID")
+            throw Exception("No hay usuario con ese ID")
         }
     }
 
@@ -38,7 +38,7 @@ class UserService {
         try {
             return repository!!.findById(id).get()
         } catch (e:Exception) {
-            throw Exception("There is no user with this ID")
+            throw Exception("No hay usuario con ese ID")
         }
     }
 
@@ -49,7 +49,7 @@ class UserService {
             val user = repository!!.findByWalletAddress(walletAddress)!!
             return UserResponseDTO.fromModel(user)
         } catch (e:Exception) {
-            throw Exception("There is no user with this wallet Address")
+            throw Exception("No hay un usuario con esa billetera")
         }
     }
 
@@ -59,6 +59,12 @@ class UserService {
             UserResponseDTO.fromModel(it)
         }
     }
+
+    @Transactional
+    fun findAllUsers(): List<User> {
+        return repository!!.findAll()
+    }
+
 
     @Transactional
     fun deleteByID(id: Int) {

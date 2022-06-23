@@ -57,6 +57,11 @@ class OrderService {
     }
 
     @Transactional
+    fun findAllOrders(): List<Order?> {
+        return repository!!.findAll()
+    }
+
+    @Transactional
     fun deleteByID(id: Int) {
         repository!!.deleteById(id)
     }

@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDateTime
@@ -32,8 +33,8 @@ class CryptoAssetQuoteControllerTest {
         assert(quote.dateTime.toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
     }
 
-//    @Test
-//    fun cryptoWrongWrite() {
-//        assertThrows<IllegalArgumentException> { cryptoAssetQuoteController!!.getCryptoAssetQuote("bnbus") }
-//    }
+    @Test
+    fun cryptoWrongWrite() {
+        assert(cryptoAssetQuoteController!!.getCryptoAssetQuote("bnbus").body == "No existe: bnbus")
+    }
 }
