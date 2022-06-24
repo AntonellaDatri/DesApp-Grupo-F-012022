@@ -35,7 +35,7 @@ class UserController {
     }
 
     @GetMapping("/api/user/walletAddress")
-    fun getUserByWA(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
+    fun getUserByWalletAddress(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
         return try {
             val user = userService!!.findByWalletAddress(walletAddress)
             ResponseEntity.ok().body(user)

@@ -53,7 +53,7 @@ class User{
         validateData(name, lastName, email, address, password, cvu, walletAddress)
     }
 
-    private fun validateData(
+    fun validateData(
         name: String?,
         lastName: String?,
         email: String?,
@@ -65,7 +65,7 @@ class User{
         if (!validateName(name)) {throw InvalidDataUser("El nombre no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.name = name!! }
         if (!validateLastName(lastName)) {throw InvalidDataUser("El apellido no debe ser vacio y debe tener entre 3 y 30 caracteres")} else { this.lastName = lastName!!}
         if (!validateEmail(email)){throw InvalidDataUser("El mail debe ser un mail valido")} else { this.email = email!! }
-        if (!validatePassword(password)) {throw InvalidDataUser("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres")}else { this.password = password!! }
+        if (!validatePassword(password)) {throw InvalidDataUser("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres") }else { this.password = password!! }
         if (!validateAddress(address!!)) {throw InvalidDataUser("La direccion no puede ser vacia y debe tener entre 10 y 30 caracteres")}else { this.address = address }
         if (!validateCVU(cvu!!)) {throw InvalidDataUser("El CVU debe tener 22 caracteres")} else { this.cvu = cvu }
         if (!validateAddressWallet(walletAddress!!)) {throw InvalidDataUser("La billetera debe tener 8 caracteres")}else {    this.walletAddress = walletAddress}
@@ -104,11 +104,11 @@ class User{
         return (walletAddress != null) && (walletAddress.toString().length == 8)
     }
 
-    fun transferMoney(cvu: String){
-        return
+    fun transferMoney(cvu: String): String {
+        return cvu
     }
-    fun transferCrypto(walletAddress: Int){
-        return
+    fun transferCrypto(walletAddress: Int): Int {
+        return walletAddress
     }
 
     companion object {

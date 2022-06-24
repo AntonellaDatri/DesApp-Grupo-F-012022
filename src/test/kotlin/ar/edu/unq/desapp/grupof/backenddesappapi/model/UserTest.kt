@@ -15,6 +15,78 @@ class UserTest {
         user.cvu = "1234567891234567891234"
         assert(user.cvu == "1234567891234567891234")
     }
+/*
+    @Test
+    fun createInvalidCVUUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(cvu="123456789123456789123") }
+        assert(thrown.message.equals("El CVU debe tener 22 caracteres"));
+
+        thrown = assertThrows { userFactory.anyUser(cvu="12345678912345678912344") }
+        assert(thrown.message.equals("El CVU debe tener 22 caracteres"));
+    }
+
+    @Test
+    fun createInvalidNameUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(name = "Maria Carmen Florencia Margarita Tercera") }
+        assert(thrown.message.equals("El nombre no debe ser vacio y debe tener entre 3 y 30 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(name = "") }
+        assert(thrown.message.equals("El nombre no debe ser vacio y debe tener entre 3 y 30 caracteres"));
+    }
+
+    @Test
+    fun createInvalidLastNameUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(lastName = "Gomez Martin Flores Gonzales Gonzales") }
+        assert(thrown.message.equals("El apellido no debe ser vacio y debe tener entre 3 y 30 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(lastName = "") }
+        assert(thrown.message.equals("El apellido no debe ser vacio y debe tener entre 3 y 30 caracteres"));
+    }
+
+    @Test
+    fun createInvalidEmailUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(email = "mail@mail.r") }
+        assert(thrown.message.equals("El mail debe ser un mail valido. Con el formato (usuario)@(portal).(dominio)"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(email = "") }
+        assert(thrown.message.equals("El mail debe ser un mail valido. Con el formato (usuario)@(portal).(dominio)"));
+    }
+
+    @Test
+    fun createInvalidPasswordUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(password = "Password") }
+        assert(thrown.message.equals("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(password = "PASSWORD@") }
+        assert(thrown.message.equals("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(password = "password@") }
+        assert(thrown.message.equals("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(password = "Pass@") }
+        assert(thrown.message.equals("La contaseña no puede estar vacia. Debe tener 1 mayuscula, 1 minuscula, 1 caracter especial y como minimo 6 caracteres"));
+    }
+
+    @Test
+    fun createInvalidWalletAddressUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(walletAddress=123456778) }
+        assert(thrown.message.equals("La billetera debe tener 8 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(walletAddress=12345) }
+        assert(thrown.message.equals("La billetera debe tener 8 caracteres"));
+    }
+
+    @Test
+    fun createInvalidAddressUserTest() {
+        var thrown = assertThrows<Exception> { userFactory.anyUser(address = "calle falsa 123 entre ninguna calle") }
+        assert(thrown.message.equals("La direccion no puede ser vacia y debe tener entre 10 y 30 caracteres"));
+
+        thrown = assertThrows<Exception> { userFactory.anyUser(address = "") }
+        assert(thrown.message.equals("La direccion no puede ser vacia y debe tener entre 10 y 30 caracteres"));
+    }
+
+
+*/
 
     @Test
     fun invalidName() {
