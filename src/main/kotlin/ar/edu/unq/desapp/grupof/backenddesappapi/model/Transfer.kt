@@ -58,6 +58,7 @@ class Transfer {
         if (order.user.id == user.id || executingUser.id!! == user.id) {
              user.points -= 20
             state = State.CANCEL
+            order.state = State.ACTIVE
         } else {
             throw InvalidUserTransfer("El usuario no puede cancelar esta transferencia")
         }

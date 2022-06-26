@@ -31,7 +31,7 @@ class OrderServiceTest {
     }
 
     @Test
-    fun createAnIntentionToOperate(){
+    fun createAnOrder(){
         val order = orderService!!.create(orderToCreate)
         assert(order.amount == orderToCreate.amountToOperate)
         assert(orderToCreate.cryptoActive == order.cryptoActive)
@@ -39,7 +39,7 @@ class OrderServiceTest {
     }
 
    @Test
-    fun findAnIntentionToOperate(){
+    fun findAnOrder(){
        orderService!!.create(orderToCreate)
        val response  = orderService.findByID(orderService.findAllOrders().first()!!.id!!)
        assert(response.user ==  "Example Example")
@@ -48,12 +48,20 @@ class OrderServiceTest {
     }
 
     @Test
-    fun findAllIntentionsToOperate(){
+    fun findAllOrders(){
         val allOperatesBefore  = orderService!!.findAll()
         assert(allOperatesBefore.isEmpty())
         orderService.create(orderToCreate)
         orderService.create(orderToCreate)
         val allOperatesAfter  = orderService.findAll()
+        assert(allOperatesAfter.size == 2)
+    }
+
+    @Test
+    fun findActivesOrders(){
+        orderService!!.create(orderToCreate)
+        orderService.create(orderToCreate)
+        val allOperatesAfter  = orderService.getActive()
         assert(allOperatesAfter.size == 2)
     }
 

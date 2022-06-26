@@ -79,7 +79,6 @@ class UserControllerTests {
 		(userToSaved as UserResponseDTO)
 		userController.deleteByID(userToSaved.id)
 		assert(userController.getUserByWalletAddress(12345678).body == "No hay un usuario con esa billetera")
-
 	}
 
 	@AfterEach

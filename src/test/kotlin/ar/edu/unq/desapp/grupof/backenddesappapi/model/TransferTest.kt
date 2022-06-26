@@ -15,11 +15,11 @@ class TransferTest {
     private lateinit var executingUser : User
     @BeforeEach
     fun setUp() {
-        transfer = transferFactory.anyTransfer()
         user = UserFactory().anyUser()
         executingUser = UserFactory().anyUser(email = "example1@mail.com", cvu = "1234567891234567891235", walletAddress= 11111112)
         user.id = 1
         executingUser.id = 2
+        transfer = transferFactory.anyTransfer(executingUser = executingUser)
     }
     @Test
     fun createUserTest() {
@@ -50,7 +50,7 @@ class TransferTest {
 
     @Test
     fun confirmTransactionHalfAmount() {
-        transfer = transferFactory.anyTransfer(amountToTransfer = 50.0)
+        transfer = transferFactory.anyTransfer(amountToTransfer = 50.0, executingUser = executingUser)
         assert(transfer.state == State.ACTIVE)
         assert(transfer.order.state == State.ACTIVE)
         transfer.confirmReception(executingUser)

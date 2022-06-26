@@ -38,7 +38,7 @@ class TransferService {
     }
 
     @Transactional
-    fun  makeTransfer(transferID: Int, userID: Int) {
+    fun makeTransfer(transferID: Int, userID: Int) {
         val transfer = findTransfer(transferID)
         validate(transfer, State.ACTIVE,"No se puede transferir  la plata")
         transfer.makeTransfer(findUser(userID))
@@ -56,7 +56,7 @@ class TransferService {
     @Transactional
     fun cancelTransfer(transferID: Int, userID: Int) {
         val transfer = findTransfer(transferID)
-        if (transfer.state != State.PENDING && transfer.state != State.ACTIVE && transfer.order.state != State.PENDING && transfer.order.state != State.ACTIVE) { throw InvalidTransactionTransfer("No se puede cancelar") }
+        if ((transfer.state != State.PENDING && transfer.state != State.ACTIVE) || (transfer.order.state != State.PENDING && transfer.order.state != State.ACTIVE)) { throw InvalidTransactionTransfer("No se puede cancelar") }
         transfer.cancel(findUser(userID))
         saveAll(transfer)
     }

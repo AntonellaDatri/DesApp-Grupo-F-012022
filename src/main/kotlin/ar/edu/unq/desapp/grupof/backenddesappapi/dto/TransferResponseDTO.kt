@@ -3,8 +3,10 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.dto
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Order
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.Transfer
+import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.State
 
 data class TransferResponseDTO(
+    val id:Int,
     val cryptoActive:String,
     val amountToOperate: Double,
     val quote: Double,
@@ -12,7 +14,8 @@ data class TransferResponseDTO(
     val user: String,
     val amountOperations:Int,
     val reputation:String,
-    val addressShipping : String
+    val addressShipping : String,
+    val state:State
     ){
 
     companion object {
@@ -20,14 +23,16 @@ data class TransferResponseDTO(
             val order = transfer.order
             val user = order.user
             return TransferResponseDTO(
+                transfer.id!!,
                 order.cryptoName!!,
-                order.amountToOperate!!,
+                order.amountToOperate,
                 transfer.cryptoPrice!!,
                 transfer.amountToTransfer!!,
                 user.name + " " +user.lastName,
                 user.amountOperations,
                 if(order.user.amountOperations != 0) (order.user.points / order.user.amountOperations).toString() else "Sin operaciones",
-                getShippingAddress(order)
+                getShippingAddress(order),
+                transfer.state
             )
         }
         private fun getShippingAddress(order: Order) : String {

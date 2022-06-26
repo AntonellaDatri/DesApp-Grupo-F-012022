@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.Operation
 import java.time.LocalDate
 
 data class OrderResponseDTO(
+    val id: Int,
     val hour:LocalDate,
     val cryptoActive:String,
     val amount: Double,
@@ -18,6 +19,7 @@ data class OrderResponseDTO(
     companion object {
         fun fromModel(order: Order, cryptoPrice: Double): OrderResponseDTO {
             return OrderResponseDTO(
+                order.id!!,
                 LocalDate.now(),
                 order.cryptoName!!,
                 order.amountToOperate,

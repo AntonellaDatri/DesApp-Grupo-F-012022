@@ -39,8 +39,12 @@ class OrderService {
 
     @Transactional
     fun findByID(id: Int): OrderResponseDTO {
-        val order = repository!!.findById(id).get()
-        return OrderResponseDTO.fromModel(order, getCryptoPrice(order))
+        try {
+            val order = repository!!.findById(id).get()
+            return OrderResponseDTO.fromModel(order, getCryptoPrice(order))
+        } catch (e:Exception) {
+            throw Exception("No existe una orden con ese id")
+        }
     }
 
     @Transactional

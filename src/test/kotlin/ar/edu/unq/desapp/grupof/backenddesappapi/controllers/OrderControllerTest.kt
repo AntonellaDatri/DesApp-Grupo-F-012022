@@ -50,6 +50,25 @@ class OrderControllerTest {
         val orders = response as ArrayList<*>
         assert(orders.size == 2)
     }
+
+    @Test
+    fun getActiveOrders() {
+        orderController!!.createOrder(orderToCreate)
+        orderController.createOrder(orderToCreate)
+        val response = orderController.getActiveOrders().body
+        val orders = response as ArrayList<*>
+        assert(orders.size == 2)
+    }
+
+    @Test
+    fun deleteAnOrder() {
+        val order = orderController!!.createOrder(orderToCreate).body
+        (order as OrderResponseDTO)
+        val orderId = order.id
+        orderController.deleteByID(orderId)
+        assert(orderController.getOrder(orderId).body == "No existe una orden con ese id")
+    }
+
     @AfterEach
     fun clear() {
         orderController!!.deleteAll()

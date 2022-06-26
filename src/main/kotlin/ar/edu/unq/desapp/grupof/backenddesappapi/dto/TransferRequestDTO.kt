@@ -10,7 +10,7 @@ data class TransferRequestDTO(
     companion object {
         fun fromModel(transfer: Transfer): TransferRequestDTO {
             val order = transfer.order
-            val user = order.user
+            val user = transfer.executingUser
             return TransferRequestDTO(
                 transfer.amountToTransfer!!,
                 user.id!!,
