@@ -71,7 +71,11 @@ class TransferService {
 
     @Transactional
     fun findByID(id: Int): TransferResponseDTO {
-        return TransferResponseDTO.fromModel(repository!!.findById(id).get())
+        try {
+            return TransferResponseDTO.fromModel(repository!!.findById(id).get())
+        } catch (e:Exception) {
+            throw Exception("No existe una transferencia con ese id")
+        }
     }
 
     @Transactional
