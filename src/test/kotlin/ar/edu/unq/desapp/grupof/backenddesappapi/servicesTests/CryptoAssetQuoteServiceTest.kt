@@ -30,6 +30,13 @@ class CryptoAssetQuoteServiceTest {
     }
 
     @Test
+    fun getTenCryptoAssets() {
+        val response = cryptoAssetQuoteService!!.getTenCryptoAssets(LocalDateTime.now())
+        assert(response.size == 14)
+    }
+
+
+    @Test
     fun cryptoWrongWrite() {
         assertThrows<IllegalArgumentException> { cryptoAssetQuoteService!!.findByCryptoName("bnbus", LocalDateTime.now()) }
     }
