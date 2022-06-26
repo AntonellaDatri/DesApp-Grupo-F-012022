@@ -19,6 +19,8 @@
 		<java.version>11</java.version>
 		<kotlin.version>1.6.10</kotlin.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.organization>desarrolloapp</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>
