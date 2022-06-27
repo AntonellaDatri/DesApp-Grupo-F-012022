@@ -1,15 +1,12 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.services
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoAssetQuoteRepository
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import retrofit2.GsonConverterFactory
 import retrofit2.Retrofit
-import java.io.IOException
 
 @Service
 class USDQuoteService {
