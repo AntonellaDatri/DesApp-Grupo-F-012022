@@ -3,6 +3,8 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.services
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.enumeration.CryptoAsset
 import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoAssetQuoteRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import retrofit2.GsonConverterFactory
@@ -30,7 +32,6 @@ class CryptoAssetQuoteService {
         return CryptoAsset.values().map {
              findByCryptoName(it.name, dateTime)
         }
-
     }
 
     private fun createRetroFit() : Retrofit{
