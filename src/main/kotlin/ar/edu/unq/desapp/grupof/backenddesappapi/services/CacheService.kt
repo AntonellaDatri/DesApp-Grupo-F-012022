@@ -12,11 +12,8 @@ class CacheService{
     private var repositoryCache: CryptoAssetRedisRepository? = null
     @Autowired
     private val cryptoService: CryptoAssetQuoteService? = null
-    fun loadSaveAll(){
-        val results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
-        results.forEach{
-                repositoryCache!!.save(it)
-        }
+    fun findById(cryptoName : String): CryptoAssetQuote? {
+        return repositoryCache!!.findById(cryptoName)
     }
 
     fun getAllCache(): Collection<CryptoAssetQuote> {
@@ -28,9 +25,5 @@ class CacheService{
         results.forEach{
             repositoryCache!!.update(it)
         }
-    }
-
-    fun deleteByTitle(titleId: String) {
-        this.repositoryCache!!.delete(titleId)
     }
 }

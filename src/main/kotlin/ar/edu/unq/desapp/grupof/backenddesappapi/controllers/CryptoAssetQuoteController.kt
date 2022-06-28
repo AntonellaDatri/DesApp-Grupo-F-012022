@@ -26,12 +26,16 @@ class CryptoAssetQuoteController {
     @LogExecutionTime
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
-        return try {
-            val cryptoQuote  =
-                cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
-            ResponseEntity.ok().body(cryptoQuote)
-        }  catch (e:IllegalArgumentException) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        return if (cacheService!!.findById(cryptoName) != null) {
+            ResponseEntity.ok().body(cacheService.findById(cryptoName))
+        } else {
+            try {
+                val cryptoQuote  =
+                    cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
+                ResponseEntity.ok().body(cryptoQuote)
+            }  catch (e:IllegalArgumentException) {
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+            }
         }
     }
 
@@ -46,8 +50,9 @@ class CryptoAssetQuoteController {
         }
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0/10 * * * *")
     fun passTenMinutes(){
+        println("Date " + LocalDateTime.now())
         cacheService!!.updateTenMinutes()
     }
 

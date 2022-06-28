@@ -7,13 +7,14 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import org.springframework.stereotype.Component
 import redis.clients.jedis.Jedis
 import java.net.URI
 
-
+@EnableRedisRepositories(basePackageClasses = [CryptoAssetQuote::class])
 @Component
 class RedisConfig {
 
@@ -32,11 +33,12 @@ class RedisConfig {
         val redisTemplate: RedisTemplate<String, CryptoAssetQuote> = RedisTemplate<String, CryptoAssetQuote>()
         redisTemplate.setConnectionFactory(jedisConnectionFactory!!)
         redisTemplate.isExposeConnection = true
-      //  redisTemplate.setDefaultSerializer(StringRedisSerializer())
         redisTemplate.setKeySerializer(StringRedisSerializer())
         redisTemplate.setHashKeySerializer(StringRedisSerializer())
         redisTemplate.setValueSerializer(GenericJackson2JsonRedisSerializer())
         redisTemplate.setEnableTransactionSupport(true)
+        jedisConnectionFactory!!.poolConfig!!.maxIdle = 30;
+        jedisConnectionFactory!!.poolConfig!!.minIdle = 10;
         jedisConnectionFactory!!.afterPropertiesSet()
         return redisTemplate
     }
@@ -56,7 +58,7 @@ class RedisConfig {
 
     @Bean
     fun getJedisClientPublisher(): Jedis {
-        return Jedis()
+        return Jedis("http://localhost", 6379)
     }
 
 }

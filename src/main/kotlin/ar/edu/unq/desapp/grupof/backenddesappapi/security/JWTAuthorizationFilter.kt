@@ -90,7 +90,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
                     .map { obj: GrantedAuthority -> obj.authority }
                     .collect(Collectors.toList()))
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + 600000))
+            .setExpiration(Date(System.currentTimeMillis() + 1000000))
             .signWith(
                 SignatureAlgorithm.HS512,
                 secretKey.toByteArray()
