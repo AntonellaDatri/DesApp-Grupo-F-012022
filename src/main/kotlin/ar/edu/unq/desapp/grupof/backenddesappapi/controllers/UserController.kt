@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.aspect.LogExecutionTime
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ class UserController {
     @Autowired
     private val userService: UserService? = null
 
+    @LogExecutionTime
     @PostMapping("/api/user/register")
     fun registerUser(@RequestBody userRequestDTO: UserRequestDTO ): ResponseEntity<*> {
         return try {
@@ -24,6 +26,7 @@ class UserController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/user/id")
     fun getUser(@RequestParam(required = true) id : Int): ResponseEntity<*> {
         return try {
@@ -34,6 +37,7 @@ class UserController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/user/walletAddress")
     fun getUserByWalletAddress(@RequestParam(required = true) walletAddress : Int): ResponseEntity<*> {
         return try {
@@ -44,17 +48,20 @@ class UserController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/user/all")
     fun getAll(): ResponseEntity<*> {
         val users = userService!!.findAll()
         return ResponseEntity.ok().body(users)
     }
 
+    @LogExecutionTime
     @DeleteMapping("/api/user/id/delete")
     fun deleteByID(id: Int) {
         userService!!.deleteByID(id)
     }
-    
+
+    @LogExecutionTime
     @DeleteMapping("/api/user/delete")
     fun deleteAll() {
         userService!!.deleteAll()

@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.aspect.LogExecutionTime
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.TransferRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.TransferService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ class TransferController {
     @Autowired
     private val transferService : TransferService? = null
 
+    @LogExecutionTime
     @PostMapping("/api/transfer/create")
     fun createTransfer(@RequestBody transferRequestDTO: TransferRequestDTO): ResponseEntity<*> {
         return try {
@@ -27,6 +29,7 @@ class TransferController {
 
     }
 
+    @LogExecutionTime
     @PostMapping("/api/transfer/make")
     fun makeTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
         return try {
@@ -37,6 +40,7 @@ class TransferController {
         }
     }
 
+    @LogExecutionTime
     @PostMapping("/api/transfer/confirm")
     fun confirmTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<String> {
         return try {
@@ -47,6 +51,7 @@ class TransferController {
         }
     }
 
+    @LogExecutionTime
     @PostMapping("/api/transfer/cancel")
     fun cancelTransfer(@RequestParam transferID: Int, userID : Int): ResponseEntity<*> {
         return try {
@@ -57,12 +62,14 @@ class TransferController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/transfer/activityBetween")
     fun getActivityBetween(@RequestParam(required = true) date1: String, date2: String, userId: Int): ResponseEntity<*> {
         val volumeOperationsDTO = transferService!!.getVolumeOperation(userId, date1, date2)
         return ResponseEntity.ok().body(volumeOperationsDTO)
     }
 
+    @LogExecutionTime
     @GetMapping("/api/transfer/id")
     fun getTransfer(@RequestParam(required = true) id : Int): ResponseEntity<*> {
         return try {
@@ -73,17 +80,20 @@ class TransferController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/transfer/all")
     fun getAll(): ResponseEntity<*> {
         val transfersDTO = transferService!!.findAll()
         return ResponseEntity.ok().body(transfersDTO)
     }
 
+    @LogExecutionTime
     @DeleteMapping("/api/transfer/id/delete")
     fun deleteByID(id: Int) {
         transferService!!.deleteByID(id)
     }
 
+    @LogExecutionTime
     @DeleteMapping("/api/transfer/delete")
     fun deleteAll() {
         transferService!!.deleteAll()

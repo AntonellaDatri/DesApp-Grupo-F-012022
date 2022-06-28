@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.aspect.LogExecutionTime
 import ar.edu.unq.desapp.grupof.backenddesappapi.model.CryptoAssetQuote
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.CryptoAssetQuoteService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +18,7 @@ class CryptoAssetQuoteController {
     @Autowired
     private val cryptoAssetQuoteService: CryptoAssetQuoteService? = null
 
+    @LogExecutionTime
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
         return try {
@@ -28,6 +30,7 @@ class CryptoAssetQuoteController {
         }
     }
 
+    @LogExecutionTime
     @GetMapping("/api/cryptoQuote/firstTen")
     fun getCryptoAssetsQuote(): ResponseEntity<*> {
         return try {

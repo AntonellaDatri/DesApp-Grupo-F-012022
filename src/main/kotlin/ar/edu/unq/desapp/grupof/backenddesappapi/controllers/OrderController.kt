@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
+import ar.edu.unq.desapp.grupof.backenddesappapi.aspect.LogExecutionTime
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.OrderRequestDTO
 import ar.edu.unq.desapp.grupof.backenddesappapi.services.OrderService
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,6 +15,7 @@ class OrderController {
     @Autowired
     private val orderService : OrderService? = null
 
+    @LogExecutionTime
     @PostMapping("/api/order/create")
     fun createOrder(@RequestBody orderRequestDTO : OrderRequestDTO): ResponseEntity<*> {
         return try {
@@ -25,6 +27,7 @@ class OrderController {
 
     }
 
+    @LogExecutionTime
     @GetMapping("/api/order/id")
     fun getOrder(@RequestParam(required = true) id : Int): ResponseEntity<*> {
         return try {
@@ -36,29 +39,33 @@ class OrderController {
 
     }
 
+    @LogExecutionTime
     @GetMapping("/api/order/all")
     fun getAll(): ResponseEntity<*> {
         val ordersDTO = orderService!!.findAll()
         return ResponseEntity.ok().body(ordersDTO)
     }
 
+    @LogExecutionTime
     @GetMapping("/api/order/allOrders")
     fun getAllOrders(): ResponseEntity<*> {
         val orders = orderService!!.findAllOrders()
         return ResponseEntity.ok().body(orders)
     }
 
+    @LogExecutionTime
     @GetMapping("/api/order/active")
     fun getActiveOrders(): ResponseEntity<*> {
         val ordersDTO = orderService!!.getActive()
         return ResponseEntity.ok().body(ordersDTO)
     }
 
+    @LogExecutionTime
     @DeleteMapping("/api/order/id/delete")
     fun deleteByID(id: Int) {
         orderService!!.deleteByID(id)
     }
-
+    @LogExecutionTime
     @DeleteMapping("/api/order/delete")
     fun deleteAll() {
         orderService!!.deleteAll()
