@@ -27,13 +27,26 @@ class CryptoAssetRedisRepository(@Qualifier("redisTemplate") @Autowired private 
             hashOperations!!.put("CRYPTO", crypto.symbol, crypto)
         }
 
+        fun saveCrypto(crypto: CryptoAssetQuote){
+            hashOperations!!.put(crypto.symbol, crypto.dateTime.toString(), crypto)
+        }
+
+        fun findAllCrypto(cryptoName: String): Map<String, CryptoAssetQuote> {
+            return hashOperations!!.entries(cryptoName)
+        }
+
         fun update(crypto: CryptoAssetQuote){
             save(crypto)
+        }
+
+        fun updateCrypto(crypto: CryptoAssetQuote){
+            saveCrypto(crypto)
         }
 
         fun findById(cryptoName: String): CryptoAssetQuote? {
             return hashOperations!!.get("CRYPTO", cryptoName)
         }
+
         fun delete(cryptoName: String){
             hashOperations!!.delete("CRYPTO", cryptoName)
         }

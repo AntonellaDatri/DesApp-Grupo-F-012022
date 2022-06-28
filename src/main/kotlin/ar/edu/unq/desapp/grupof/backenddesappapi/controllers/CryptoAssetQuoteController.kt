@@ -19,20 +19,19 @@ import java.time.LocalDateTime
 @EnableAutoConfiguration
 class CryptoAssetQuoteController {
     @Autowired
-    private val cryptoAssetQuoteService: CryptoAssetQuoteService? = null
-    @Autowired
     private val cacheService : CacheService? = null
 
     @LogExecutionTime
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
-        return if (cacheService!!.findById(cryptoName) != null) {
-            ResponseEntity.ok().body(cacheService.findById(cryptoName))
+        return if (cacheService!!.getAllCryptoCache(cryptoName).isEmpty()) {
+            cacheService.saveCrypto(cryptoName)
+            val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
+            ResponseEntity.ok().body(cryptoQuotes)
         } else {
             try {
-                val cryptoQuote  =
-                    cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
-                ResponseEntity.ok().body(cryptoQuote)
+                val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
+                ResponseEntity.ok().body(cryptoQuotes)
             }  catch (e:IllegalArgumentException) {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
             }
@@ -52,9 +51,14 @@ class CryptoAssetQuoteController {
 
     @Scheduled(cron = "0 0/10 * * * *")
     fun passTenMinutes(){
-        println("Date " + LocalDateTime.now())
         cacheService!!.updateTenMinutes()
     }
+
+    @Scheduled(cron = "0 0/5 * * * *")
+    fun passFiveMinutes(){
+        cacheService!!.updateFiveMinutes()
+    }
+
 
     @Transactional
     fun getAllTenCryptos(): Collection<CryptoAssetQuote> {

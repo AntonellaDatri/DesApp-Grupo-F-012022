@@ -20,10 +20,24 @@ class CacheService{
         return repositoryCache!!.findAll().values
     }
 
+    fun getAllCryptoCache(cryptoName : String): Collection<CryptoAssetQuote> {
+        return repositoryCache!!.findAllCrypto(cryptoName).values
+    }
+
     fun updateTenMinutes(){
         var results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
         results.forEach{
             repositoryCache!!.update(it)
+        }
+    }
+    fun saveCrypto(cryptoName: String) {
+        repositoryCache!!.updateCrypto(cryptoService!!.findByCryptoName(cryptoName, LocalDateTime.now()))
+    }
+
+    fun updateFiveMinutes() {
+        var results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
+        results.forEach{
+            repositoryCache!!.updateCrypto(it)
         }
     }
 }
