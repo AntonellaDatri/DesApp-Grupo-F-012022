@@ -54,7 +54,10 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
         val jwtToken = request.getHeader(HEADER).replace(PREFIX, "")
         return Jwts.parser().setSigningKey(SECRET.toByteArray()).parseClaimsJws(jwtToken).body
     }
-
+    fun getUserNameWith(request: HttpServletRequest): String? {
+        val jwtToken = request.getHeader(HEADER).replace(PREFIX, "")
+        return Jwts.parser().setSigningKey(SECRET.toByteArray()).parseClaimsJws(jwtToken).body.subject
+    }
     /**
      * Metodo para autenticarnos dentro del flujo de Spring
      *
@@ -78,6 +81,7 @@ class JWTAuthorizationFilter : OncePerRequestFilter() {
     }
 
     fun getJWTToken(username: String): String {
+
         val secretKey = "mySecretKey"
         val grantedAuthorities = AuthorityUtils
             .commaSeparatedStringToAuthorityList("ROLE_USER")

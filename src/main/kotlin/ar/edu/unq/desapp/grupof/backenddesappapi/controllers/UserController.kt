@@ -2,20 +2,25 @@ package ar.edu.unq.desapp.grupof.backenddesappapi.controllers
 
 import ar.edu.unq.desapp.grupof.backenddesappapi.aspect.LogExecutionTime
 import ar.edu.unq.desapp.grupof.backenddesappapi.dto.UserRequestDTO
-import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import ar.edu.unq.desapp.grupof.backenddesappapi.security.JWTAuthorizationFilter
+import ar.edu.unq.desapp.grupof.backenddesappapi.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
+
 
 @RestController
 @EnableAutoConfiguration
 class UserController {
     @Autowired
     private val userService: UserService? = null
+
+    @Autowired
+    var request: HttpServletRequest? = null
 
     @LogExecutionTime
     @PostMapping("/api/user/register")
@@ -34,8 +39,10 @@ class UserController {
     @LogExecutionTime
     @GetMapping("/api/user/id")
     fun getUser(@RequestParam(required = true) id : Int): ResponseEntity<*> {
+
         return try {
             val user = userService!!.findByID(id)
+            JWTAuthorizationFilter().getUserNameWith(request!!)
             ResponseEntity.ok().body(user)
         } catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
