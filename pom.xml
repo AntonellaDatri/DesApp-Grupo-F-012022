@@ -16,7 +16,7 @@
 	<description>Proyecto Backend del Grupo F de la materia de Desarrollo de Aplicaciones</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<kotlin.version>1.6.10</kotlin.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.organization>desarrolloapp</sonar.organization>
