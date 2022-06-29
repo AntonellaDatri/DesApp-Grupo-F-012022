@@ -11,6 +11,34 @@ class CryptoAssetQuoteControllerTest {
     @Autowired
     private val cryptoAssetQuoteController : CryptoAssetQuoteController? = null
     @Test
+    fun getCryptoAssetQuoteUpperCaseLast24Hours() {
+        val response = cryptoAssetQuoteController!!.getLast24HoursCryptoAssetQuote("BNBUSDT")
+        val quote =response.body as MutableList<CryptoAssetQuote>
+        val quoteAssetName = quote[0].symbol
+        assert(quoteAssetName == "BNBUSDT")
+    }
+
+    @Test
+    fun getCryptoAssetQuoteLowerCaseLast24Hours() {
+        val response = cryptoAssetQuoteController!!.getLast24HoursCryptoAssetQuote("bnbusdt")
+        val quote =response.body as MutableList<CryptoAssetQuote>
+        val quoteAssetName = quote[0].symbol
+        assert(quoteAssetName == "BNBUSDT")
+    }
+
+    @Test
+    fun getTenCryptoAssets() {
+        val response = cryptoAssetQuoteController!!.getCryptoAssetsQuote().body
+        (response as MutableList<CryptoAssetQuote>)
+        assert(response.size == 14)
+    }
+
+    @Test
+    fun cryptoWrongWriteLast24Hours() {
+        assert(cryptoAssetQuoteController!!.getLast24HoursCryptoAssetQuote("bnbus").body == "No existe: bnbus")
+    }
+
+    @Test
     fun getCryptoAssetQuoteUpperCase() {
         val response = cryptoAssetQuoteController!!.getCryptoAssetQuote("BNBUSDT")
         val quote =response.body as CryptoAssetQuote
@@ -30,13 +58,6 @@ class CryptoAssetQuoteControllerTest {
         assert(quoteAssetName == "BNBUSDT")
         assert(price == quote.price)
         assert(quote.dateTime.toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
-    }
-
-    @Test
-    fun getTenCryptoAssets() {
-        val response = cryptoAssetQuoteController!!.getCryptoAssetsQuote().body
-        (response as ArrayList<CryptoAssetQuote>)
-        assert(response.size == 14)
     }
 
     @Test

@@ -183,6 +183,20 @@ class TransferServiceTest {
     }
 
     @Test
+    fun getVolumenOperationWrongPattern() {
+        val transferToCreate = TransferRequestDTO.fromModel(transferFactory.anyTransfer(order = order, executingUser = user))
+        transferService!!.createTransfer(transferToCreate)
+        transferService.createTransfer(transferToCreate)
+        transferService.createTransfer(transferToCreate)
+
+        val tomorrow = LocalDate.now().plusDays(1)
+        val yesterday = LocalDate.now().minusDays(1)
+        val formattedTomorrow: String = tomorrow.format(DateTimeFormatter.ofPattern("MM-yy-dd"))
+        val formattedYesterday: String = yesterday.format(DateTimeFormatter.ofPattern("MM-yy-dd"))
+        assertThrows<Exception>("El formato debe ser Año-Mes-Fecha"){ transferService.getVolumeOperation(user.id!!, formattedYesterday , formattedTomorrow)}
+    }
+
+    @Test
     fun findAllTransfers() {
         val transferToCreate = TransferRequestDTO.fromModel(transferFactory.anyTransfer(order = order, executingUser = user))
         transferService!!.createTransfer(transferToCreate)

@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupof.backenddesappapi.repositories.CryptoAssetRedisRe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class CacheService{
@@ -20,12 +21,12 @@ class CacheService{
         return repositoryCache!!.findAll().values
     }
 
-    fun getAllCryptoCache(cryptoName : String): Collection<CryptoAssetQuote> {
-        return repositoryCache!!.findAllCrypto(cryptoName).values
+    fun getAllCryptoCache(cryptoName : String): MutableList<CryptoAssetQuote> {
+        return repositoryCache!!.findAllCrypto(cryptoName.uppercase(Locale.getDefault())).values.toMutableList()
     }
 
     fun updateTenMinutes(){
-        var results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
+        val results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
         results.forEach{
             repositoryCache!!.update(it)
         }
@@ -35,7 +36,7 @@ class CacheService{
     }
 
     fun updateFiveMinutes() {
-        var results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
+        val results: List<CryptoAssetQuote> = cryptoService!!.getTenCryptoAssets(LocalDateTime.now())
         results.forEach{
             repositoryCache!!.updateCrypto(it)
         }

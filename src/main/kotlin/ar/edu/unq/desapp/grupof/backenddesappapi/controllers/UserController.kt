@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletRequest
 
 
 @RestController
@@ -18,9 +17,6 @@ import javax.servlet.http.HttpServletRequest
 class UserController {
     @Autowired
     private val userService: UserService? = null
-
-    @Autowired
-    var request: HttpServletRequest? = null
 
     @LogExecutionTime
     @PostMapping("/api/user/register")
@@ -42,7 +38,6 @@ class UserController {
 
         return try {
             val user = userService!!.findByID(id)
-            JWTAuthorizationFilter().getUserNameWith(request!!)
             ResponseEntity.ok().body(user)
         } catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)

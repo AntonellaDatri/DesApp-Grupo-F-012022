@@ -23,8 +23,8 @@ class OrderService {
     @Transactional
     fun create(orderDTO: OrderRequestDTO) : OrderResponseDTO {
         val user = userRepository!!.findById(orderDTO.user).get()
+        val cryptoPrice = getCryptoPrice(orderDTO.cryptoActive)
         val order = save(Order.fromModel(orderDTO, user))
-        val cryptoPrice = getCryptoPrice(order)
         return OrderResponseDTO.fromModel(order, cryptoPrice)
     }
 
@@ -32,7 +32,7 @@ class OrderService {
     fun getActive(): List<OrderResponseDTO> {
         val activeOrders = repository!!.findByStateEquals(State.ACTIVE)
         return activeOrders.map {
-            val cryptoPrice = getCryptoPrice(it!!)
+            val cryptoPrice = getCryptoPrice(it!!.cryptoName!!)
             OrderResponseDTO.fromModel(it, cryptoPrice)
         }
     }
@@ -41,7 +41,7 @@ class OrderService {
     fun findByID(id: Int): OrderResponseDTO {
         try {
             val order = repository!!.findById(id).get()
-            return OrderResponseDTO.fromModel(order, getCryptoPrice(order))
+            return OrderResponseDTO.fromModel(order, getCryptoPrice(order.cryptoName!!))
         } catch (e:Exception) {
             throw Exception("No existe una orden con ese id")
         }
@@ -55,7 +55,7 @@ class OrderService {
     @Transactional
     fun findAll(): List<OrderResponseDTO> {
         return repository!!.findAll().map {
-            val cryptoPrice = getCryptoPrice(it!!)
+            val cryptoPrice = getCryptoPrice(it!!.cryptoName!!)
             OrderResponseDTO.fromModel(it, cryptoPrice)
         }
     }
@@ -69,14 +69,14 @@ class OrderService {
     fun deleteByID(id: Int) {
         repository!!.deleteById(id)
     }
-    
+
     @Transactional
     fun deleteAll() {
         repository!!.deleteAll()
     }
 
-    private fun getCryptoPrice(order : Order) : Double {
-        return cryptoAssetQuoteService!!.findByCryptoName(order.cryptoName!!, LocalDateTime.now()).price.toDouble()
+    private fun getCryptoPrice(cryptoName : String) : Double {
+        return cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now()).price.toDouble()
     }
 
     fun save(order: Order): Order {

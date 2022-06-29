@@ -96,17 +96,33 @@ class TransferService {
     }
 
     private fun findBetween(userId : Int, dateString1: String, dateString2: String): List<TransferActivesDTO> {
-        val date1 = formatDate(dateString1)
-        val date2 = formatDate(dateString2)
+        val date1 : Date
+        val date2 : Date
+        try {
+            date1 = formatDate(dateString1)
+            date2 = formatDate(dateString2)
+        }catch (e:Exception) {
+            throw Exception("El formato debe ser Año-Mes-Fecha")
+        }
         val transfers = repository!!.findBetween(date1, date2, userId)
         return transfers.map{ TransferActivesDTO.fromModel(it!!) }
     }
 
     private fun formatDate(date: String): Date {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
+        verifyDate(date)
         return formatter.parse(date)
     }
 
+    private fun verifyDate(date: String){
+        val split = date.split("-")
+        val year = split[0].length != 4
+        val month = split[1].isEmpty() || split[1].length > 2
+        val day = split[2].isEmpty()  || split[2].length > 2
+            if ( year || month || day){
+            throw Exception()
+        }
+    }
     private fun save(transfer: Transfer): Transfer {
         repository!!.save(transfer)
         return transfer

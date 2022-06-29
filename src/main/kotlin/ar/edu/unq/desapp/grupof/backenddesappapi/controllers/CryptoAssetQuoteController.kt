@@ -19,23 +19,41 @@ import java.time.LocalDateTime
 @EnableAutoConfiguration
 class CryptoAssetQuoteController {
     @Autowired
+    private val cryptoAssetQuoteService: CryptoAssetQuoteService? = null
+    @Autowired
     private val cacheService : CacheService? = null
 
     @LogExecutionTime
     @GetMapping("/api/cryptoQuote")
     fun getCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
-        return if (cacheService!!.getAllCryptoCache(cryptoName).isEmpty()) {
-            cacheService.saveCrypto(cryptoName)
-            val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
-            ResponseEntity.ok().body(cryptoQuotes)
+        return if (cacheService!!.findById(cryptoName) != null) {
+            ResponseEntity.ok().body(cacheService.findById(cryptoName))
         } else {
             try {
-                val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
-                ResponseEntity.ok().body(cryptoQuotes)
-            }  catch (e:IllegalArgumentException) {
+                val cryptoQuote =
+                    cryptoAssetQuoteService!!.findByCryptoName(cryptoName, LocalDateTime.now())
+                ResponseEntity.ok().body(cryptoQuote)
+            } catch (e: IllegalArgumentException) {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
             }
         }
+    }
+
+    @LogExecutionTime
+    @GetMapping("/api/last24HoursCryptoQuote")
+    fun getLast24HoursCryptoAssetQuote(@RequestParam(required = true) cryptoName : String): ResponseEntity<*> {
+        return try {
+            if (cacheService!!.getAllCryptoCache(cryptoName).isEmpty()) {
+                cacheService.saveCrypto(cryptoName)
+                val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
+                ResponseEntity.ok().body(cryptoQuotes)
+            }
+            val cryptoQuotes = cacheService.getAllCryptoCache(cryptoName)
+            ResponseEntity.ok().body(cryptoQuotes)
+        }  catch (e:IllegalArgumentException) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
+
     }
 
     @LogExecutionTime
@@ -61,7 +79,7 @@ class CryptoAssetQuoteController {
 
 
     @Transactional
-    fun getAllTenCryptos(): Collection<CryptoAssetQuote> {
-        return cacheService!!.getAllCache()
+    fun getAllTenCryptos(): MutableList<CryptoAssetQuote> {
+        return cacheService!!.getAllCache().toMutableList()
     }
 }

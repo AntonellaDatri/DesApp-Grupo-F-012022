@@ -65,8 +65,12 @@ class TransferController {
     @LogExecutionTime
     @GetMapping("/api/transfer/activityBetween")
     fun getActivityBetween(@RequestParam(required = true) date1: String, date2: String, userId: Int): ResponseEntity<*> {
-        val volumeOperationsDTO = transferService!!.getVolumeOperation(userId, date1, date2)
-        return ResponseEntity.ok().body(volumeOperationsDTO)
+        return try {
+            val volumeOperationsDTO = transferService!!.getVolumeOperation(userId, date1, date2)
+            return ResponseEntity.ok().body(volumeOperationsDTO)
+        }catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
     }
 
     @LogExecutionTime
