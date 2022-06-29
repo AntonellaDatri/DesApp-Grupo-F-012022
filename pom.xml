@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>ar.edu.unq.desapp.grupoF</groupId>
 	<artifactId>bakend-desapp-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 	<name>bakend-desapp-api</name>
 	<description>Proyecto Backend del Grupo F de la materia de Desarrollo de Aplicaciones</description>
 
@@ -179,10 +179,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.jetbrains.kotlin</groupId>
-				<artifactId>kotlin-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
