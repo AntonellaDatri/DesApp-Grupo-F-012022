@@ -46,7 +46,6 @@ class CryptoAssetQuoteControllerTest {
         val price = quote.price
         assert(quoteAssetName == "BNBUSDT")
         assert(price == quote.price)
-        assert(quote.dateTime.toLocalDate().isEqual(LocalDateTime.now().toLocalDate()))
     }
 
     @Test
