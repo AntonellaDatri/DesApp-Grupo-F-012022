@@ -11,12 +11,12 @@ class TransferVolumeDTO {
     lateinit var listActives: List<TransferActivesDTO>
     constructor() : super()
     constructor(
-        user: UserResponseDTO, listActives : List<TransferActivesDTO>, USDQuote : Double
+        user: UserResponseDTO, listActives : List<TransferActivesDTO>, usdQuote : Double
     ) : super() {
         this.user = user
         this.dateTime = Date()
         this.totalAmountARS = listActives.sumOf{ it.arsAmount }
-        this.totalAmountUSD = listActives.sumOf { it.arsAmount * USDQuote}
+        this.totalAmountUSD = listActives.sumOf { it.arsAmount * usdQuote}
         this.listActives = listActives
     }
 
