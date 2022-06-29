@@ -25,7 +25,7 @@ class SecurityCFG : WebSecurityConfigurerAdapter() {
         http.csrf().disable()
             .addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
             .authorizeRequests().antMatchers("/swagger-ui/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/cryptoQuote/firstTen","/api/cryptoQuote").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/cryptoQuote/firstTen","/api/cryptoQuote","/api/last24HoursCryptoQuote").permitAll()
             .antMatchers(HttpMethod.POST, "/api/user/register").permitAll()
             .anyRequest()
             .authenticated().and().cors()//.and().httpBasic()
